@@ -1,0 +1,101 @@
+# Release workflow: build + sign + publish an APK whenever a tag starting
+# with "v" is pushed (e.g. `git tag v1.2.0 && git push origin v1.2.0`).
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   KEYSTORE_BASE64   base64 of android/astrbot-mobile-release.keystore
+#                     (generate: base64 -w0 android/astrbot-mobile-release.keystore)
+#   KEYSTORE_PASSWORD keystore password    (astrbot-mobile-2024)
+#   KEY_ALIAS         signing key alias     (astrbot-mobile)
+#   KEY_PASSWORD      signing key password  (astrbot-mobile-2024)
+#
+# The APK is signed with the same key as local builds, so CI artifacts can be
+# installed as updates over locally built ones (and vice versa).
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+  # Manual test runs: build only, skip the GitHub Release step.
+  workflow_dispatch:
+
+permissions:
+  contents: write # required to create the GitHub Release
+
+jobs:
+  build:
+    name: Build & release APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Restore signing keystore
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEYSTORE_BASE64" ]; then
+            echo "::warning::KEYSTORE_BASE64 secret is not set; the APK will be unsigned. Add the repository secrets listed at the top of release.yml."
+            exit 0
+          fi
+          echo "$KEYSTORE_BASE64" | base64 -d > android/astrbot-mobile-release.keystore
+          cat > android/key.properties <<EOF
+          storeFile=astrbot-mobile-release.keystore
+          storePassword=$KEYSTORE_PASSWORD
+          keyPassword=$KEY_PASSWORD
+          keyAlias=$KEY_ALIAS
+          EOF
+
+      - name: Show Flutter version
+        run: flutter --version
+
+      - name: Analyze
+        run: flutter analyze --no-pub
+
+      - name: Test
+        run: flutter test --no-pub
+
+      - name: Build release APK
+        run: flutter build apk --release
+
+      - name: Extract version from tag
+        if: startsWith(github.ref, 'refs/tags/')
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Rename and verify APK
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          mv build/app/outputs/flutter-apk/app-release.apk \
+             astrbot-mobile-${{ steps.ver.outputs.version }}.apk
+          # Sanity-check the signature when the release key was restored.
+          if [ -f android/key.properties ]; then
+            APKSIGNER=$(ls "$ANDROID_HOME"/build-tools/*/apksigner | tail -1)
+            "$APKSIGNER" verify --print-certs "astrbot-mobile-${{ steps.ver.outputs.version }}.apk" | head -3
+          fi
+
+      - name: Create GitHub Release with APK
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          fail_on_unmatched_files: true
+          files: astrbot-mobile-*.apk
