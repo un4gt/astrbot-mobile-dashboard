@@ -3,6 +3,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -96,7 +98,9 @@ class _EditProviderScreenState extends ConsumerState<EditProviderScreen> {
     final bundle = ref.watch(configBundleProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isNew ? 'New provider' : 'Edit provider'),
+        title: Text(widget.isNew
+            ? context.trM('config.newProvider')
+            : context.trM('config.editProvider')),
         actions: [
           TextButton(
             onPressed: _saving ? null : _save,
@@ -106,7 +110,7 @@ class _EditProviderScreenState extends ConsumerState<EditProviderScreen> {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Save'),
+                : Text(context.trM('config.save')),
           ),
         ],
       ),

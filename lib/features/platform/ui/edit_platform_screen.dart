@@ -4,6 +4,8 @@ library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -83,7 +85,9 @@ class _EditPlatformScreenState extends ConsumerState<EditPlatformScreen> {
       }
       ref.invalidate(configBundleProvider);
       if (mounted) {
-        _snack(widget.isNew ? 'Adapter created.' : 'Adapter saved.');
+        _snack(widget.isNew
+            ? context.trM('config.adapterCreated')
+            : context.trM('config.adapterSaved'));
         context.pop();
       }
     } on ApiException catch (e) {
@@ -106,7 +110,9 @@ class _EditPlatformScreenState extends ConsumerState<EditPlatformScreen> {
     final bundle = ref.watch(configBundleProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.isNew ? 'New adapter' : 'Edit adapter'),
+        title: Text(widget.isNew
+            ? context.trM('config.newAdapter')
+            : context.trM('config.editAdapter')),
         actions: [
           TextButton(
             onPressed: _saving ? null : _save,
@@ -116,7 +122,7 @@ class _EditPlatformScreenState extends ConsumerState<EditPlatformScreen> {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Save'),
+                : Text(context.trM('config.save')),
           ),
         ],
       ),
