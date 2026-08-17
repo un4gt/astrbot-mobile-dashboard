@@ -1,0 +1,66 @@
+name: astrbot_mobile
+description: "AstrBot mobile companion dashboard"
+publish_to: 'none'
+version: 1.1.0+3
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  # State management & routing
+  flutter_riverpod: ^2.5.1
+  go_router: ^14.2.7
+
+  # Networking
+  dio: ^5.7.0
+
+  # Storage
+  flutter_secure_storage: ^9.2.2
+  shared_preferences: ^2.3.2
+
+  # Utilities
+  crypto: ^3.0.5
+  intl: ^0.20.2
+  collection: ^1.18.0
+  package_info_plus: ^8.0.2
+  path_provider: ^2.1.5
+  url_launcher: ^6.3.1
+
+  # UI / data
+  cached_network_image: ^3.4.1
+  fl_chart: ^0.69.0
+  # Phase 8 additions for Phase 10/15 features
+  flutter_markdown: ^0.7.7
+  markdown: ^7.3.0
+  photo_view: ^0.15.0
+  share_plus: ^10.0.0
+  file_picker: ^10.1.0   # Probing this version against compileSdk 36;
+                         # if Gradle still rejects, we'll switch to file_selector.
+
+  cupertino_icons: ^1.0.8
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  generate: false
+
+  assets:
+    - assets/i18n/en-US/core/
+    - assets/i18n/en-US/features/
+    - assets/i18n/en-US/features/knowledge-base/
+    - assets/i18n/en-US/features/alkaid/
+    - assets/i18n/en-US/messages/
+    - assets/i18n/zh-CN/core/
+    - assets/i18n/zh-CN/features/
+    - assets/i18n/zh-CN/features/knowledge-base/
+    - assets/i18n/zh-CN/features/alkaid/
+    - assets/i18n/zh-CN/messages/
