@@ -150,25 +150,22 @@ class ConfigField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  label,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
+          Text(
+            label,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
                 ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                itemKey,
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.outline,
-                      fontFamily: 'monospace',
-                    ),
-              ),
-            ],
+          ),
+          // Technical key as a caption line: full width means long dotted
+          // keys wrap at readable positions instead of stacking vertically
+          // when squeezed next to the label.
+          Text(
+            itemKey,
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Theme.of(context).colorScheme.outline,
+                  fontFamily: 'monospace',
+                  fontSize: 11,
+                ),
           ),
           ?hintWidget,
           const SizedBox(height: 6),

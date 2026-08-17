@@ -199,7 +199,14 @@
     "savedRestarting": "已保存。AstrBot 内核正在重启,你可能需要重新登录。",
     "unsaved": "有未保存改动",
     "save": "保存",
-    "specialPlaceholder": "_special: {name}  -  picker 后续阶段接入"
+    "specialPlaceholder": "_special: {name}  -  picker 后续阶段接入",
+    "refresh": "刷新",
+    "newAdapter": "新建适配器",
+    "editAdapter": "编辑适配器",
+    "adapterCreated": "适配器已创建。",
+    "adapterSaved": "适配器已保存。",
+    "newProvider": "新建提供商",
+    "editProvider": "编辑提供商"
   },
   "mcp": {
     "title": "MCP / 工具",

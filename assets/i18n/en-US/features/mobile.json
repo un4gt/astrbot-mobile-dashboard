@@ -199,7 +199,14 @@
     "savedRestarting": "Saved. AstrBot core is restarting -- you may be asked to sign in again.",
     "unsaved": "Unsaved changes",
     "save": "Save",
-    "specialPlaceholder": "_special: {name}  -  picker arrives in a later phase"
+    "specialPlaceholder": "_special: {name}  -  picker arrives in a later phase",
+    "refresh": "Refresh",
+    "newAdapter": "New adapter",
+    "editAdapter": "Edit adapter",
+    "adapterCreated": "Adapter created.",
+    "adapterSaved": "Adapter saved.",
+    "newProvider": "New provider",
+    "editProvider": "Edit provider"
   },
   "mcp": {
     "title": "MCP / Tools",

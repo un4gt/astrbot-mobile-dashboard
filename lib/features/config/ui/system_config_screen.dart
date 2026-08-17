@@ -71,10 +71,10 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
     if (!_dirty) return true;
     return showConfirmDialog(
       context: context,
-      title: 'Discard changes?',
-      message: 'Unsaved edits will be lost.',
+      title: context.trM('config.discardTitle'),
+      message: context.trM('config.discardMessage'),
       destructive: true,
-      confirmLabel: 'Discard',
+      confirmLabel: context.trM('common.cancel'),
     );
   }
 
@@ -97,11 +97,11 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
       ref.invalidate(systemConfigProvider);
       _dirty = false;
       if (!mounted) return;
-      messenger.showSnackBar(const SnackBar(
+      messenger.showSnackBar(SnackBar(
         content: Text(
-          'Saved. AstrBot core is restarting -- you may be asked to sign in again.',
+          context.trM('config.savedRestarting'),
         ),
-        duration: Duration(seconds: 4),
+        duration: const Duration(seconds: 4),
       ));
     } on ApiException catch (e) {
       if (!mounted) return;
@@ -131,10 +131,10 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Configuration'),
+          title: Text(context.trM('config.title')),
           actions: [
             IconButton(
-              tooltip: 'Refresh',
+              tooltip: context.trM('config.refresh'),
               onPressed: () async {
                 if (await _confirmDiscard()) {
                   ref.invalidate(systemConfigProvider);
@@ -312,7 +312,7 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    'Unsaved changes',
+                    context.trM('config.unsaved'),
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ),
@@ -327,7 +327,7 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
                   : const Icon(Icons.save_outlined),
-              label: const Text('Save'),
+              label: Text(context.trM('config.save')),
             ),
           ],
         ),
