@@ -399,7 +399,8 @@
     "noActiveUserPlugins": "No activated user plugins",
     "ofTotalChosen": "{chosen} of {total} chosen",
     "allPlugins": "All plugins",
-    "comingSoon": "Coming in a later phase"
+    "comingSoon": "Coming in a later phase",
+    "close": "Close"
   },
   "diagnostic": {
     "title": "Diagnostic",
@@ -429,5 +430,28 @@
     "deleteTitle": "Delete server?",
     "deleteMessage": "This removes \"{name}\" and its saved login from this app. Data on the server is not affected.",
     "deleteConfirm": "Delete"
+  },
+  "update": {
+    "settingsSection": "Updates",
+    "autoCheck": "Check for updates on startup",
+    "autoCheckSubtitle": "Silently check GitHub for newer releases at launch",
+    "checkNow": "Check for updates now",
+    "checkNowSubtitle": "Immediately look for a newer version",
+    "availableTitle": "New version v{version} available",
+    "currentIs": "Current version v{version}",
+    "install": "Install",
+    "later": "Later",
+    "cancel": "Cancel",
+    "downloading": "Downloading update",
+    "installing": "Installing…",
+    "failed": "Update failed",
+    "upToDate": "You are on the latest version.",
+    "checkFailed": "Update check failed. Try again later.",
+    "noApkAsset": "This release has no APK asset; open the release page to download.",
+    "errAlreadyRunning": "A download is already in progress.",
+    "errPermission": "Install permission not granted. Allow this app to install apps in system settings.",
+    "errInternal": "Internal error.",
+    "errDownload": "Download failed.",
+    "errChecksum": "Checksum failed; the file may be incomplete."
   }
 }

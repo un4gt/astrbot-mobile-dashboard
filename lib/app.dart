@@ -8,6 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/i18n/app_localizations.dart';
 import 'core/router/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/update/ui/startup_update_gate.dart';
 import 'shared/providers/app_providers.dart';
 
 class AstrBotApp extends ConsumerWidget {
@@ -34,6 +35,10 @@ class AstrBotApp extends ConsumerWidget {
       ],
       supportedLocales: AppLocalizations.supportedLocales,
       routerConfig: router,
+      // Startup auto-update check happens behind the router; failures are
+      // silent and never block app usage.
+      builder: (context, child) =>
+          StartupUpdateGate(child: child ?? const SizedBox.shrink()),
     );
   }
 }

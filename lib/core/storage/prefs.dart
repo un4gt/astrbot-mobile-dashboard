@@ -11,6 +11,7 @@ class PrefKeys {
   static const username = 'astrbot.username';
   static const changePwdHint = 'astrbot.changePwdHint';
   static const localDebug = 'astrbot.localDebug'; // built-in mock data, no server
+  static const autoCheckUpdate = 'astrbot.autoCheckUpdate'; // self-update check
   static const profilesJson = 'astrbot.profiles'; // multi-server list
   static const activeProfileId = 'astrbot.activeProfileId';
 }
@@ -88,6 +89,11 @@ class Prefs {
   bool get localDebug => _sp.getBool(PrefKeys.localDebug) ?? false;
   Future<void> setLocalDebug(bool v) async =>
       _sp.setBool(PrefKeys.localDebug, v);
+
+  // App self-update ------------------------------------------------------------
+  bool get autoCheckUpdate => _sp.getBool(PrefKeys.autoCheckUpdate) ?? true;
+  Future<void> setAutoCheckUpdate(bool v) async =>
+      _sp.setBool(PrefKeys.autoCheckUpdate, v);
 
   // Raw typed access for callers that own their own key scheme
   // (e.g. ProfileStore's per-profile records) -------------------------------

@@ -9,9 +9,54 @@ import '../../../core/i18n/app_localizations.dart';
 import '../../../shared/providers/app_providers.dart';
 import '../../../shared/widgets/confirm_dialog.dart';
 import '../../auth/ui/change_password_dialog.dart';
+import '../../update/data/update_service.dart';
+import '../../update/ui/update_flow.dart';
 
-class SettingsScreen extends ConsumerWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  bool _checkingUpdate = false;
+
+  Future<void> _checkUpdate() async {
+    setState(() => _checkingUpdate = true);
+    final svc = ref.read(updateServiceProvider);
+    try {
+      final info = await svc.check();
+      if (!mounted) return;
+      if (info.hasUpdate) {
+        final install = await showUpdateDialog(context, info);
+        if (!mounted || !install) return;
+        final asset = await svc.matchingAsset(info);
+        if (!mounted) return;
+        if (asset == null) {
+          _snack(context.trM('update.noApkAsset'));
+          return;
+        }
+        await runInstallFlow(context, asset);
+      } else {
+        _snack(context.trM('update.upToDate'));
+      }
+    } on UpdateCheckException {
+      if (mounted) _snack(context.trM('update.checkFailed'), error: true);
+    } catch (_) {
+      if (mounted) _snack(context.trM('update.checkFailed'), error: true);
+    } finally {
+      if (mounted) setState(() => _checkingUpdate = false);
+    }
+  }
+
+  void _snack(String msg, {bool error = false}) {
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(msg),
+      backgroundColor:
+          error ? Theme.of(context).colorScheme.error : null,
+    ));
+  }
 
   Future<void> _logout(BuildContext context, WidgetRef ref) async {
     // In local debug mode "logging out" means leaving debug mode; there is
@@ -59,13 +104,16 @@ class SettingsScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final themeMode = ref.watch(themeModeProvider);
     final locale = ref.watch(localeProvider);
     final baseUrl = ref.watch(baseUrlProvider);
     final localDebug = ref.watch(localDebugProvider);
     final profile = ref.watch(profilesProvider).active;
     final username = ref.watch(activeUsernameProvider) ?? '-';
+    final autoCheckUpdate = ref.watch(autoCheckUpdateProvider);
+    final checking = _checkingUpdate;
 
     return Scaffold(
       appBar: AppBar(title: Text(context.trM('settings.title'))),
@@ -104,6 +152,30 @@ class SettingsScreen extends ConsumerWidget {
             title: Text(context.trM('settings.diagnostic')),
             trailing: const Icon(Icons.chevron_right),
             onTap: () => context.push('/more/settings/diagnostic'),
+          ),
+          const Divider(),
+          _section(context, context.trM('update.settingsSection')),
+          CheckboxListTile(
+            secondary: const Icon(Icons.update_outlined),
+            title: Text(context.trM('update.autoCheck')),
+            subtitle: Text(context.trM('update.autoCheckSubtitle')),
+            value: autoCheckUpdate,
+            onChanged: (v) => ref
+                .read(autoCheckUpdateProvider.notifier)
+                .set(v ?? false),
+          ),
+          ListTile(
+            leading: const Icon(Icons.search),
+            title: Text(context.trM('update.checkNow')),
+            subtitle: Text(context.trM('update.checkNowSubtitle')),
+            trailing: checking
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                : const Icon(Icons.chevron_right),
+            onTap: checking ? null : _checkUpdate,
           ),
           ListTile(
             leading:
