@@ -20,6 +20,8 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        // ota_update depends on java.time etc. -- required by its AAR metadata.
+        isCoreLibraryDesugaringEnabled = true
     }
 
     defaultConfig {
@@ -51,6 +53,10 @@ android {
             signingConfig = signingConfigs.getByName("release")
         }
     }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }
 
 kotlin {
