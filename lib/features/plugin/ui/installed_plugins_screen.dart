@@ -10,12 +10,24 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/api/api_exception.dart';
 import '../../../core/i18n/app_localizations.dart';
+import '../../../shared/providers/app_providers.dart';
 import '../../../shared/widgets/confirm_dialog.dart';
 import '../../../shared/widgets/item_card.dart';
 import '../data/plugin_service.dart';
 
 class InstalledPluginsScreen extends ConsumerWidget {
   const InstalledPluginsScreen({super.key});
+
+  /// Plugin logos come back as `/api/file/<token>` -- relative to the active
+  /// server. Tokens are short-lived; a failed load falls back to the icon.
+  String? _logoUrl(WidgetRef ref, InstalledPlugin p) {
+    final logo = p.logo;
+    if (logo == null) return null;
+    if (logo.startsWith('http')) return logo;
+    final base = ref.read(baseUrlProvider);
+    if (base == null || base.isEmpty) return null;
+    return '$base$logo';
+  }
 
   Future<void> _toggle(BuildContext ctx, WidgetRef ref, InstalledPlugin p,
       bool active) async {
@@ -130,6 +142,7 @@ class InstalledPluginsScreen extends ConsumerWidget {
                   title: p.name,
                   subtitle: subtitle.isEmpty ? p.description : subtitle,
                   icon: Icons.extension_outlined,
+                  imageUrl: _logoUrl(ref, p),
                   enabled: p.activated,
                   onEnabledChanged:
                       p.reserved ? null : (v) => _toggle(context, ref, p, v),

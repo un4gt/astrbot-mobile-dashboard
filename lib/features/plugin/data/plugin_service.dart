@@ -20,6 +20,13 @@ class InstalledPlugin {
   String get author => (raw['author'] ?? '').toString();
   String get description => (raw['desc'] ?? raw['description'] ?? '').toString();
   String? get repo => raw['repo']?.toString();
+
+  /// Server-side logo URL (`/api/file/<token>`) when the plugin ships one.
+  String? get logo {
+    final v = raw['logo']?.toString();
+    return (v != null && v.isNotEmpty) ? v : null;
+  }
+
   bool get activated =>
       raw['activated'] == true || raw['enable'] == true || raw['enabled'] == true;
   bool get reserved => raw['reserved'] == true; // built-in plugins

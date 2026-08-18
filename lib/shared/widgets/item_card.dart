@@ -3,6 +3,7 @@
 /// switch and a tap handler. Edit / delete are exposed via a popup menu.
 library;
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ItemCardAction {
@@ -24,6 +25,7 @@ class ItemCard extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.icon,
+    this.imageUrl,
     this.statusLabel,
     this.statusColor,
     this.enabled,
@@ -35,12 +37,43 @@ class ItemCard extends StatelessWidget {
   final String title;
   final String? subtitle;
   final IconData? icon;
+
+  /// Optional network image (e.g. plugin logo from `/api/file/<token>`);
+  /// falls back to [icon] on load failure or when null.
+  final String? imageUrl;
   final String? statusLabel;
   final Color? statusColor;
   final bool? enabled;
   final ValueChanged<bool>? onEnabledChanged;
   final VoidCallback? onTap;
   final List<ItemCardAction> actions;
+
+  Widget _leading(BuildContext context) {
+    if (imageUrl != null && imageUrl!.isNotEmpty) {
+      return CircleAvatar(
+        backgroundColor: Colors.transparent,
+        child: ClipOval(
+          child: CachedNetworkImage(
+            imageUrl: imageUrl!,
+            width: 40,
+            height: 40,
+            fit: BoxFit.cover,
+            errorWidget: (_, _, _) => _iconFallback(context),
+            placeholder: (_, _) => _iconFallback(context),
+          ),
+        ),
+      );
+    }
+    return _iconFallback(context);
+  }
+
+  Widget _iconFallback(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    return CircleAvatar(
+      backgroundColor: cs.primary.withValues(alpha: 0.12),
+      child: Icon(icon ?? Icons.category_outlined, color: cs.primary),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,10 +87,7 @@ class ItemCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(14, 12, 6, 12),
           child: Row(
             children: [
-              CircleAvatar(
-                backgroundColor: cs.primary.withValues(alpha: 0.12),
-                child: Icon(icon ?? Icons.category_outlined, color: cs.primary),
-              ),
+              _leading(context),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
