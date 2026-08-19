@@ -49,27 +49,42 @@ class MarketPlugin {
   }
 }
 
+/// Installed list plus the envelope's `message`, which the server uses to
+/// report plugins that failed to load.
+class InstalledPluginsResult {
+  final List<InstalledPlugin> plugins;
+
+  /// Load-failure notice from the server (envelope message), or null.
+  final String? loadError;
+  InstalledPluginsResult({required this.plugins, this.loadError});
+}
+
 class PluginService {
   PluginService(this._dio);
   final Dio _dio;
 
-  Future<List<InstalledPlugin>> listInstalled() async {
+  Future<InstalledPluginsResult> listInstalled() async {
     try {
       final res = await _dio.get<dynamic>('/api/plugin/get');
+      final loadError =
+          res.extra[EnvelopeInterceptorKeys.messageKey]?.toString();
       final data = res.data;
+      List list;
       if (data is Map && data['data'] is List) {
-        return (data['data'] as List)
+        list = data['data'] as List;
+      } else if (data is List) {
+        list = data;
+      } else {
+        list = const [];
+      }
+      return InstalledPluginsResult(
+        plugins: list
             .whereType<Map>()
             .map((m) => InstalledPlugin(Map<String, dynamic>.from(m)))
-            .toList();
-      }
-      if (data is List) {
-        return data
-            .whereType<Map>()
-            .map((m) => InstalledPlugin(Map<String, dynamic>.from(m)))
-            .toList();
-      }
-      return const [];
+            .toList(),
+        loadError:
+            (loadError != null && loadError.isNotEmpty) ? loadError : null,
+      );
     } on DioException catch (e) {
       if (e.error is ApiException) throw e.error as ApiException;
       throw ApiException.fromDio(e);
@@ -219,7 +234,9 @@ final pluginServiceProvider =
     Provider<PluginService>((ref) => PluginService(ref.watch(apiClientProvider)));
 
 final installedPluginsProvider =
-    FutureProvider<List<InstalledPlugin>>((ref) async {
+    FutureProvider<InstalledPluginsResult>((ref) async {
+  // Re-fetch when the active server changes so failures follow the profile.
+  ref.watch(apiClientProvider);
   return ref.watch(pluginServiceProvider).listInstalled();
 });
 

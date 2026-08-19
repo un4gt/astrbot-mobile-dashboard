@@ -29,8 +29,18 @@ class _AuthInterceptor extends Interceptor {
   }
 }
 
+/// Key under which the envelope's success `message` is exposed in
+/// `Response.extra`.
+class EnvelopeInterceptorKeys {
+  static const messageKey = 'envelope_message';
+}
+
 /// Unwraps the AstrBot envelope so call-sites can use `response.data`
 /// directly as the inner payload. Throws ApiException on `status == 'error'`.
+///
+/// Success envelopes may still carry a meaningful `message` (e.g. the
+/// plugin list reports load-failed plugins there) -- it is preserved in
+/// `response.extra['envelope_message']` for call-sites that care.
 class _EnvelopeInterceptor extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
@@ -52,6 +62,12 @@ class _EnvelopeInterceptor extends Interceptor {
           ),
         );
         return;
+      }
+      if (status == 'ok') {
+        final msg = body['message']?.toString();
+        if (msg != null && msg.isNotEmpty) {
+          response.extra[EnvelopeInterceptorKeys.messageKey] = msg;
+        }
       }
       if (status == 'ok' && body.containsKey('data')) {
         response.data = body['data'];
