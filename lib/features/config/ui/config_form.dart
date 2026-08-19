@@ -74,6 +74,19 @@ class ConfigFormState extends State<ConfigForm> {
     _data = deepCopyMap(widget.initial);
   }
 
+  @override
+  void didUpdateWidget(covariant ConfigForm oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // The form keeps a private editable copy of the initial config. When the
+    // surrounding screen swaps the config (e.g. another section opens at the
+    // same spot in the tree) the copy must follow, or the form keeps showing
+    // the previous data.
+    if (!identical(oldWidget.initial, widget.initial) &&
+        oldWidget.initial != widget.initial) {
+      _data = deepCopyMap(widget.initial);
+    }
+  }
+
   /// Public read of the current edited map. Parent calls this on save.
   Map<String, dynamic> currentValue() => deepCopyMap(_data);
 
@@ -98,8 +111,12 @@ class ConfigFormState extends State<ConfigForm> {
     final loc = AppLocalizations.of(context);
     final children = <Widget>[];
 
-    final secDesc = widget.title ??
-        translateMetaString(loc, widget.sectionMeta['description'])?.toString();
+    // title == '' (empty, not null) suppresses the header entirely --
+    // _NestedForm passes it because it draws the section title itself.
+    final secDesc = widget.title != null
+        ? (widget.title!.isNotEmpty ? widget.title : null)
+        : translateMetaString(loc, widget.sectionMeta['description'])
+            ?.toString();
     final secHint = translateMetaString(loc, widget.sectionMeta['hint'])
         ?.toString();
     if ((secDesc?.isNotEmpty ?? false) || (secHint?.isNotEmpty ?? false)) {
@@ -168,7 +185,11 @@ class ConfigFormState extends State<ConfigForm> {
       }
 
       final value = entry.value;
-      if (meta['type'] == 'object' && meta['items'] is Map && value is Map) {
+      // Nested sections: web's AstrBotConfig.vue recurses for any item whose
+      // type is 'object' (config_template variants included).
+      if ((meta['type'] == 'object' || meta['type'] == 'config_template') &&
+          meta['items'] is Map &&
+          value is Map) {
         children.add(_NestedForm(
           sectionMeta: meta,
           initial: Map<String, dynamic>.from(value),
@@ -204,7 +225,9 @@ class ConfigFormState extends State<ConfigForm> {
       }
 
       final value = getValueBySelector(_data, itemKey);
-      if (meta['type'] == 'object' && meta['items'] is Map && value is Map) {
+      if ((meta['type'] == 'object' || meta['type'] == 'config_template') &&
+          meta['items'] is Map &&
+          value is Map) {
         children.add(_NestedForm(
           sectionMeta: meta,
           initial: Map<String, dynamic>.from(value),
@@ -284,6 +307,10 @@ class _NestedForm extends StatelessWidget {
               sectionMeta: sectionMeta,
               initial: initial,
               mode: ConfigFormMode.configKeys,
+              // The wrapper above already renders this section's
+              // description; passing '' suppresses the duplicate title the
+              // inner form would otherwise draw from sectionMeta.
+              title: '',
               onChanged: onChanged,
             ),
           ),
