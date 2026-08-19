@@ -35,10 +35,10 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
   Future<void> _delete(McpServer s) async {
     final ok = await showConfirmDialog(
       context: context,
-      title: 'Delete MCP server?',
-      message: '"${s.name}" will be removed.',
+      title: context.trM('mcp.deleteTitle'),
+      message: context.trM('mcp.deleteMessage', params: {'name': s.name}),
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: context.trM('common.delete'),
     );
     if (!ok) return;
     try {
@@ -150,7 +150,7 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
                 actions: [
                   ItemCardAction(
                     icon: Icons.network_check,
-                    label: 'Test',
+                    label: context.trM('mcp.test'),
                     onSelected: () async {
                       try {
                         await ref.read(mcpServiceProvider).testServer(s.raw);
@@ -170,7 +170,7 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
                   ),
                   ItemCardAction(
                     icon: Icons.delete_outline,
-                    label: 'Delete',
+                    label: context.trM('common.delete'),
                     destructive: true,
                     onSelected: () => _delete(s),
                   ),

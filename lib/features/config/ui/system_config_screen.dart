@@ -74,7 +74,7 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
       title: context.trM('config.discardTitle'),
       message: context.trM('config.discardMessage'),
       destructive: true,
-      confirmLabel: context.trM('common.cancel'),
+      confirmLabel: context.trM('common.discard'),
     );
   }
 
@@ -133,6 +133,24 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
         appBar: AppBar(
           title: Text(context.trM('config.title')),
           actions: [
+            // Save is also in the top bar: always reachable even when the
+            // keyboard or a scroll position hides the bottom save bar.
+            Padding(
+              padding: const EdgeInsets.only(right: 4),
+              child: TextButton.icon(
+                onPressed: (_saving || config.valueOrNull == null)
+                    ? null
+                    : () => _save(config.valueOrNull!),
+                icon: _saving
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.save_outlined, size: 18),
+                label: Text(context.trM('config.save')),
+              ),
+            ),
             IconButton(
               tooltip: context.trM('config.refresh'),
               onPressed: () async {

@@ -156,8 +156,8 @@ class _DictEditorSheetState extends State<_DictEditorSheet> {
                           flex: 2,
                           child: TextField(
                             controller: _rows[i].k,
-                            decoration: const InputDecoration(
-                              hintText: 'key',
+                            decoration: InputDecoration(
+                              hintText: context.trM('config.keyPlaceholder'),
                               isDense: true,
                               border: OutlineInputBorder(),
                             ),
@@ -168,8 +168,8 @@ class _DictEditorSheetState extends State<_DictEditorSheet> {
                           flex: 3,
                           child: TextField(
                             controller: _rows[i].v,
-                            decoration: const InputDecoration(
-                              hintText: 'value',
+                            decoration: InputDecoration(
+                              hintText: context.trM('config.valuePlaceholder'),
                               isDense: true,
                               border: OutlineInputBorder(),
                             ),

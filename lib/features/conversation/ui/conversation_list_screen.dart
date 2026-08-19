@@ -163,7 +163,7 @@ class _ConversationListScreenState
     final result = await showDialog<String?>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Edit title'),
+        title: Text(context.trM('conversation.editTitle')),
         content: TextField(
           controller: ctrl,
           autofocus: true,
@@ -172,11 +172,11 @@ class _ConversationListScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, null),
-            child: const Text('Cancel'),
+            child: Text(context.trM('common.cancel')),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, ctrl.text.trim()),
-            child: const Text('Save'),
+            child: Text(context.trM('common.save')),
           ),
         ],
       ),
@@ -217,7 +217,7 @@ class _ConversationListScreenState
               ]
             : [
                 IconButton(
-                  tooltip: 'Refresh',
+                  tooltip: context.trM('common.refresh'),
                   onPressed: _refresh,
                   icon: const Icon(Icons.refresh),
                 ),
@@ -334,11 +334,11 @@ class _ConversationListScreenState
                               }
                             },
                             itemBuilder: (_) => [
-                              const PopupMenuItem(
+                              PopupMenuItem(
                                 value: 'edit',
                                 child: ListTile(
-                                  leading: Icon(Icons.edit_outlined),
-                                  title: Text('Edit title'),
+                                  leading: const Icon(Icons.edit_outlined),
+                                  title: Text(context.trM('conversation.editTitle')),
                                   contentPadding: EdgeInsets.zero,
                                 ),
                               ),
@@ -347,7 +347,7 @@ class _ConversationListScreenState
                                 child: ListTile(
                                   leading: Icon(Icons.delete_outline,
                                       color: Theme.of(context).colorScheme.error),
-                                  title: Text('Delete',
+                                  title: Text(context.trM('common.delete'),
                                       style: TextStyle(color: Theme.of(context).colorScheme.error)),
                                   contentPadding: EdgeInsets.zero,
                                 ),

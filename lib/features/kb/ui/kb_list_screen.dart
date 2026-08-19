@@ -155,7 +155,7 @@ class KbListScreen extends ConsumerWidget {
         title: Text(context.trM('kb.title')),
         actions: [
           IconButton(
-            tooltip: 'Refresh',
+            tooltip: context.trM('common.refresh'),
             onPressed: () => ref.invalidate(kbListProvider),
             icon: const Icon(Icons.refresh),
           ),
@@ -208,7 +208,7 @@ class KbListScreen extends ConsumerWidget {
                     ),
                     ItemCardAction(
                       icon: Icons.delete_outline,
-                      label: 'Delete',
+                      label: context.trM('common.delete'),
                       destructive: true,
                       onSelected: () => _delete(context, ref, kb),
                     ),

@@ -83,10 +83,10 @@ class _ConversationDetailScreenState
   Future<void> _delete() async {
     final ok = await showConfirmDialog(
       context: context,
-      title: 'Delete conversation?',
-      message: '"${_summary.title}" will be removed.',
+      title: context.trM('conversation.deleteTitle'),
+      message: context.trM('conversation.deleteMessage', params: {'title': _summary.title}),
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: context.trM('common.delete'),
     );
     if (!ok) return;
     try {
@@ -111,12 +111,12 @@ class _ConversationDetailScreenState
         title: Text(_summary.title, maxLines: 1, overflow: TextOverflow.ellipsis),
         actions: [
           IconButton(
-            tooltip: 'Edit title',
+            tooltip: context.trM('conversation.editTitle'),
             onPressed: _editTitle,
             icon: const Icon(Icons.edit_outlined),
           ),
           IconButton(
-            tooltip: 'Delete',
+            tooltip: context.trM('common.delete'),
             onPressed: _delete,
             icon: const Icon(Icons.delete_outline),
           ),

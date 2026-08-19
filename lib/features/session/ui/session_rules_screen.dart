@@ -43,9 +43,9 @@ class SessionRulesScreen extends ConsumerWidget {
           height: MediaQuery.of(sheetCtx).size.height * 0.7,
           child: Column(
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.fromLTRB(16, 12, 16, 8),
-                child: Text('Pick an active UMO',
+                child: Text(context.trM('session.pickActiveUmo'),
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
               ),
               const Divider(height: 1),
@@ -88,10 +88,10 @@ class SessionRulesScreen extends ConsumerWidget {
       BuildContext context, WidgetRef ref, SessionRule rule) async {
     final ok = await showConfirmDialog(
       context: context,
-      title: 'Delete rule?',
+      title: context.trM('session.deleteTitle'),
       message: 'All overrides for ${rule.umo} will be removed.',
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: context.trM('common.delete'),
     );
     if (!ok) return;
     try {
@@ -124,7 +124,7 @@ class SessionRulesScreen extends ConsumerWidget {
         title: Text(context.trM('session.rulesTitle')),
         actions: [
           IconButton(
-            tooltip: 'Refresh',
+            tooltip: context.trM('common.refresh'),
             onPressed: () => ref.invalidate(sessionRulesProvider),
             icon: const Icon(Icons.refresh),
           ),

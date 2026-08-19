@@ -79,7 +79,7 @@ class PluginSetSelectorField extends ConsumerWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                        Text('Plugin set',
+                        Text(context.trM('common.pluginSetTitle'),
                             style: Theme.of(sheetCtx).textTheme.titleMedium),
                       ],
                     ),

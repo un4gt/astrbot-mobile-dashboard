@@ -192,7 +192,9 @@
     "noMatch": "没有匹配的插件。",
     "readmeNone": "该插件没有 README。",
     "readmeNoRepo": "暂无 README(无仓库地址)。",
-    "readmeNotFound": "仓库中未找到 README.md。"
+    "readmeNotFound": "仓库中未找到 README.md。",
+    "builtIn": "内置",
+    "searchPlugins": "搜索插件"
   },
   "console": {
     "title": "控制台",
@@ -231,7 +233,13 @@
     "disableAll": "禁用全部插件",
     "storedEmpty": "存储为 []",
     "allPlugins": "全部插件",
-    "addProvider": "新建提供商"
+    "addProvider": "新建提供商",
+    "renameAdapter": "重命名适配器?",
+    "renameProvider": "重命名提供商?",
+    "platformSchemaError": "服务器未返回平台 schema。",
+    "providerSchemaError": "服务器未返回提供商 schema。",
+    "keyPlaceholder": "键",
+    "valuePlaceholder": "值"
   },
   "mcp": {
     "title": "MCP / 工具",
@@ -461,7 +469,8 @@
     "comingSoon": "后续阶段接入",
     "close": "关闭",
     "confirm": "确认",
-    "clear": "清除"
+    "clear": "清除",
+    "remove": "移除"
   },
   "diagnostic": {
     "title": "诊断",

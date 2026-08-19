@@ -47,7 +47,7 @@ class PersonaListScreen extends ConsumerWidget {
         title: Text(context.trM('persona.title')),
         actions: [
           IconButton(
-            tooltip: 'Refresh',
+            tooltip: context.trM('common.refresh'),
             onPressed: () => ref.invalidate(personasProvider),
             icon: const Icon(Icons.refresh),
           ),
@@ -92,13 +92,13 @@ class PersonaListScreen extends ConsumerWidget {
                   actions: [
                     ItemCardAction(
                       icon: Icons.edit_outlined,
-                      label: 'Edit',
+                      label: context.trM('common.edit'),
                       onSelected: () =>
                           context.push('/more/persona/edit', extra: p.raw),
                     ),
                     ItemCardAction(
                       icon: Icons.delete_outline,
-                      label: 'Delete',
+                      label: context.trM('common.delete'),
                       destructive: true,
                       onSelected: () => _delete(context, ref, p),
                     ),

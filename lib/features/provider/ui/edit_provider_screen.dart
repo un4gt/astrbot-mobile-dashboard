@@ -58,7 +58,7 @@ class _EditProviderScreenState extends ConsumerState<EditProviderScreen> {
     } else if (widget.originalId != null && widget.originalId != id) {
       final ok = await showConfirmDialog(
         context: context,
-        title: 'Rename provider?',
+        title: context.trM('config.renameProvider'),
         message:
             'You changed id from "${widget.originalId}" to "$id". The server will update under the original key.',
       );
@@ -121,10 +121,10 @@ class _EditProviderScreenState extends ConsumerState<EditProviderScreen> {
         data: (b) {
           final schema = b.providerItemsSchema;
           if (schema == null) {
-            return const Center(
+            return Center(
               child: Padding(
                 padding: EdgeInsets.all(24),
-                child: Text('Server did not return a provider schema.'),
+                child: Text(context.trM('config.providerSchemaError')),
               ),
             );
           }

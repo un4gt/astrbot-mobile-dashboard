@@ -167,9 +167,9 @@ class _PickerSheetState extends State<_PickerSheet> {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
                 controller: _searchCtrl,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Search',
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: context.trM('common.search'),
                   isDense: true,
                   border: OutlineInputBorder(),
                 ),

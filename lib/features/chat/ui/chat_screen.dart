@@ -107,10 +107,10 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
   Future<void> _deleteSession(ChatSession s) async {
     final ok = await showConfirmDialog(
       context: context,
-      title: 'Delete session?',
-      message: '"${s.title}" and all its messages will be removed.',
+      title: context.trM('chat.deleteSession'),
+      message: context.trM('chat.deleteSessionMessage', params: {'title': s.title}),
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: context.trM('common.delete'),
     );
     if (!ok) return;
     try {

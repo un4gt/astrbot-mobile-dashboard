@@ -362,10 +362,9 @@ Future<void> _showInstallUrlDialog(
             TextField(
               controller: ctrl,
               autofocus: true,
-              decoration: const InputDecoration(
-                labelText: 'Git repository URL',
-                hintText: 'https://github.com/owner/repo',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: context.trM('plugins.installFromUrlHint'),
+                border: const OutlineInputBorder(),
               ),
             ),
             if (error != null) ...[

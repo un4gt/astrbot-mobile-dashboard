@@ -12,6 +12,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -203,7 +205,7 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Save'),
+                : Text(context.trM('common.save')),
           ),
         ],
       ),
@@ -260,11 +262,11 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
   ) {
     final cs = Theme.of(context).colorScheme;
     return _Section(
-      title: 'Tools',
+      title: context.trM('persona.tools'),
       icon: Icons.build_outlined,
       trailing: _useAll
-          ? const Chip(
-              label: Text('All'),
+          ? Chip(
+              label: Text(context.trM('persona.all')),
               visualDensity: VisualDensity.compact,
             )
           : Chip(
@@ -280,18 +282,18 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
             onChanged: (v) {
               if (v != null) _setUseAll(v);
             },
-            child: const Column(
+            child: Column(
               children: [
                 RadioListTile<bool>(
                   value: true,
-                  title: Text('Use all function tools'),
-                  subtitle: Text('Stored as `tools: null`'),
+                  title: Text(context.trM('persona.useAll')),
+                  subtitle: Text(context.trM('persona.useAllStored')),
                   contentPadding: EdgeInsets.zero,
                 ),
                 RadioListTile<bool>(
                   value: false,
-                  title: Text('Custom selection'),
-                  subtitle: Text('Pick the subset of tools below'),
+                  title: Text(context.trM('persona.customSelection')),
+                  subtitle: Text(context.trM('persona.customSelectionHint')),
                   contentPadding: EdgeInsets.zero,
                 ),
               ],
@@ -320,7 +322,7 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('MCP servers (quick-select)',
+                            Text(context.trM('persona.mcpQuickSelect'),
                                 style: Theme.of(context).textTheme.labelLarge),
                             const SizedBox(height: 6),
                             Wrap(
@@ -346,9 +348,9 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
                   ),
                   TextField(
                     controller: _searchCtrl,
-                    decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.search),
-                      hintText: 'Search tools',
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: context.trM('persona.searchTools'),
                       isDense: true,
                       border: OutlineInputBorder(),
                     ),
@@ -375,9 +377,9 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
                 (t.mcpServerName?.toLowerCase().contains(_toolQuery) ?? false);
           }).toList();
     if (filtered.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 16),
-        child: Text('No tools match.'),
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Text(context.trM('persona.noToolsMatch')),
       );
     }
     // Group by mcp_server_name (null = "Built-in").
@@ -440,7 +442,7 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
 
   Widget _dialogsSection() {
     return _Section(
-      title: 'Preset dialog',
+      title: context.trM('persona.presetDialog'),
       icon: Icons.chat_outlined,
       trailing: Chip(
         label: Text('${_dialogCtrls.length ~/ 2} pair(s)'),
@@ -472,7 +474,7 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
                   ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.delete_outline),
-                    tooltip: 'Remove',
+                    tooltip: context.trM('common.remove'),
                     onPressed: () => _removeDialogAt(i),
                   ),
                 ),
@@ -482,7 +484,7 @@ class _PersonaFormScreenState extends ConsumerState<PersonaFormScreen> {
           OutlinedButton.icon(
             onPressed: _addDialogPair,
             icon: const Icon(Icons.add),
-            label: const Text('Add user/assistant pair'),
+            label: Text(context.trM('persona.addDialogPair')),
           ),
         ],
       ),

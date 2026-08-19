@@ -5,6 +5,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../persona/data/persona_service.dart';
@@ -42,7 +44,7 @@ class PersonaSelectorField extends ConsumerWidget {
     ];
     final result = await showSinglePickerSheet(
       context: context,
-      title: 'Select persona',
+      title: context.trM('common.choosePersona'),
       entries: entries,
       currentValue: value?.toString() ?? '',
       emptyHint: 'No personas yet. Create one from More -> Persona.',

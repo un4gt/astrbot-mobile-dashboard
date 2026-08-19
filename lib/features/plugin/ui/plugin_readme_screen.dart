@@ -119,12 +119,12 @@ class _PluginReadmeScreenState extends ConsumerState<PluginReadmeScreen> {
         actions: [
           if (widget.repoUrl != null)
             IconButton(
-              tooltip: 'Open repo',
+              tooltip: context.trM('plugins.openRepo'),
               onPressed: () => launchUrl(Uri.parse(widget.repoUrl!)),
               icon: const Icon(Icons.open_in_new),
             ),
           IconButton(
-            tooltip: 'Refresh',
+            tooltip: context.trM('common.refresh'),
             onPressed: _refresh,
             icon: const Icon(Icons.refresh),
           ),

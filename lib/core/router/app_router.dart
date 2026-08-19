@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../i18n/app_localizations.dart';
+
 import '../../features/auth/ui/login_screen.dart';
 import '../../features/chat/ui/chat_screen.dart';
 import '../../features/config/ui/system_config_screen.dart';
@@ -162,7 +164,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                 ),
                 GoRoute(
                   path: 'detail',
-                  builder: (_, state) {
+                  builder: (context, state) {
                     final raw = state.extra;
                     if (raw is Map<String, dynamic>) {
                       return PluginDetailScreen(raw: raw);
@@ -171,8 +173,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                       return PluginDetailScreen(
                           raw: Map<String, dynamic>.from(raw));
                     }
-                    return const Scaffold(
-                      body: Center(child: Text('Missing plugin payload.')),
+                    return Scaffold(
+                      body: Center(child: Text(context.trM('common.missingPayload'))),
                     );
                   },
                 ),
@@ -206,15 +208,15 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   routes: [
                     GoRoute(
                       path: 'view',
-                      builder: (_, state) {
+                      builder: (context, state) {
                         final raw = state.extra;
                         if (raw is Map) {
                           return PersonaViewScreen(
                             persona: Map<String, dynamic>.from(raw),
                           );
                         }
-                        return const Scaffold(
-                          body: Center(child: Text('Missing persona payload.')),
+                        return Scaffold(
+                          body: Center(child: Text(context.trM('common.missingPayload'))),
                         );
                       },
                     ),
@@ -234,16 +236,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   routes: [
                     GoRoute(
                       path: 'detail',
-                      builder: (_, state) {
+                      builder: (context, state) {
                         final raw = state.extra;
                         if (raw is Map) {
                           return ConversationDetailScreen(
                             summary: Map<String, dynamic>.from(raw),
                           );
                         }
-                        return const Scaffold(
+                        return Scaffold(
                           body: Center(
-                              child: Text('Missing conversation payload.')),
+                              child: Text(context.trM('common.missingPayload'))),
                         );
                       },
                     ),
@@ -255,16 +257,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
                   routes: [
                     GoRoute(
                       path: 'edit',
-                      builder: (_, state) {
+                      builder: (context, state) {
                         final raw = state.extra;
                         if (raw is Map) {
                           return SessionRuleEditorScreen(
                             payload: Map<String, dynamic>.from(raw),
                           );
                         }
-                        return const Scaffold(
+                        return Scaffold(
                           body: Center(
-                              child: Text('Missing session payload.')),
+                              child: Text(context.trM('common.missingPayload'))),
                         );
                       },
                     ),
@@ -329,7 +331,7 @@ Widget _buildPlatformEditor(Object? extra) {
       originalId: raw['id']?.toString(),
     );
   }
-  return const Scaffold(body: Center(child: Text('Missing platform payload.')));
+  return const Scaffold(body: Center(child: SizedBox.shrink()));
 }
 
 Widget _buildProviderEditor(Object? extra) {
@@ -349,7 +351,7 @@ Widget _buildProviderEditor(Object? extra) {
       originalId: raw['id']?.toString(),
     );
   }
-  return const Scaffold(body: Center(child: Text('Missing provider payload.')));
+  return const Scaffold(body: Center(child: SizedBox.shrink()));
 }
 
 /// Build PluginReadmeScreen from `state.extra = {name, repo}`.
@@ -365,5 +367,5 @@ Widget _buildReadme(Object? extra, {required bool fromMarket}) {
       );
     }
   }
-  return const Scaffold(body: Center(child: Text('Missing plugin payload.')));
+  return const Scaffold(body: Center(child: SizedBox.shrink()));
 }

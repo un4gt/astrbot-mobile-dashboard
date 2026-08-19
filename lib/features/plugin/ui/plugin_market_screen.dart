@@ -58,7 +58,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
         title: Text(context.trM('plugins.marketTitle')),
         actions: [
           IconButton(
-            tooltip: 'Refresh',
+            tooltip: context.trM('common.refresh'),
             onPressed: () async {
               // Force refresh from server.
               ref.invalidate(pluginMarketProvider);
@@ -74,9 +74,9 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
             child: TextField(
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search),
-                hintText: 'Search plugins',
+                hintText: context.trM('plugins.searchPlugins'),
                 isDense: true,
                 border: OutlineInputBorder(),
               ),
@@ -175,7 +175,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
                                     extra: {'name': p.name, 'repo': p.repo},
                                   ),
                                   icon: const Icon(Icons.description_outlined),
-                                  label: const Text('README'),
+                                  label: Text(context.trM('plugins.readme')),
                                 ),
                                 const Spacer(),
                                 FilledButton.tonalIcon(

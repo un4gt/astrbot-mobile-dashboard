@@ -272,7 +272,7 @@ class _ServiceSectionState extends State<_ServiceSection> {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      title: 'Service',
+      title: context.trM('session.service'),
       icon: Icons.tune,
       onClear: widget.onClear,
       onSave: () {
@@ -357,7 +357,7 @@ class _ProviderSectionState extends State<_ProviderSection> {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      title: 'Provider overrides',
+      title: context.trM('session.providerOverrides'),
       icon: Icons.psychology_outlined,
       onSave: () {
         widget.onSave('provider_perf_chat_completion', _chat);
@@ -442,7 +442,7 @@ class _PluginSectionState extends State<_PluginSection> {
         .toList()
       ..sort();
     return _SectionCard(
-      title: 'Plugin overrides',
+      title: context.trM('session.pluginOverrides'),
       icon: Icons.extension_outlined,
       onSave: () {
         widget.onSave({
@@ -592,7 +592,7 @@ class _KbSectionState extends State<_KbSection> {
   @override
   Widget build(BuildContext context) {
     return _SectionCard(
-      title: 'Knowledge base',
+      title: context.trM('session.kb'),
       icon: Icons.menu_book_outlined,
       onSave: () => widget.onSave({
         'kb_ids': _kbIds.toList(),

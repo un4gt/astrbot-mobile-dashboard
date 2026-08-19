@@ -68,7 +68,7 @@ class _EditPlatformScreenState extends ConsumerState<EditPlatformScreen> {
       // The server's update endpoint keys on the original id.
       final ok = await showConfirmDialog(
         context: context,
-        title: 'Rename adapter?',
+        title: context.trM('config.renameAdapter'),
         message:
             'You changed id from "${widget.originalId}" to "$id". The server will update it under the original key.',
       );
@@ -134,10 +134,10 @@ class _EditPlatformScreenState extends ConsumerState<EditPlatformScreen> {
         data: (b) {
           final schema = b.platformItemsSchema;
           if (schema == null) {
-            return const Center(
+            return Center(
               child: Padding(
                 padding: EdgeInsets.all(24),
-                child: Text('Server did not return a platform schema.'),
+                child: Text(context.trM('config.platformSchemaError')),
               ),
             );
           }

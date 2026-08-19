@@ -3,6 +3,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../kb/data/kb_service.dart';
@@ -41,7 +43,7 @@ class KbSelectorField extends ConsumerWidget {
     ];
     final result = await showMultiPickerSheet(
       context: context,
-      title: 'Select knowledge bases',
+      title: context.trM('common.chooseKbs'),
       entries: entries,
       currentValues: _selected,
       emptyHint: 'No knowledge bases yet.',

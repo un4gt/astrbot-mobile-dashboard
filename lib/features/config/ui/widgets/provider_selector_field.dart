@@ -8,6 +8,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../shared/widgets/type_icons.dart';
@@ -90,7 +92,7 @@ class ProviderSelectorField extends ConsumerWidget {
 
     final result = await showSinglePickerSheet(
       context: context,
-      title: 'Select provider',
+      title: context.trM('common.chooseProvider'),
       entries: entries,
       currentValue: value?.toString() ?? '',
       emptyHint:

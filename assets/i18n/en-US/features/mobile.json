@@ -192,7 +192,9 @@
     "noMatch": "No matching plugins.",
     "readmeNone": "This plugin has no README.",
     "readmeNoRepo": "No README available (no repo URL).",
-    "readmeNotFound": "Could not locate README.md in the repo."
+    "readmeNotFound": "Could not locate README.md in the repo.",
+    "builtIn": "built-in",
+    "searchPlugins": "Search plugins"
   },
   "console": {
     "title": "Console",
@@ -231,7 +233,13 @@
     "disableAll": "Disable all plugins",
     "storedEmpty": "Stored as []",
     "allPlugins": "All plugins",
-    "addProvider": "Add provider"
+    "addProvider": "Add provider",
+    "renameAdapter": "Rename adapter?",
+    "renameProvider": "Rename provider?",
+    "platformSchemaError": "Server did not return a platform schema.",
+    "providerSchemaError": "Server did not return a provider schema.",
+    "keyPlaceholder": "key",
+    "valuePlaceholder": "value"
   },
   "mcp": {
     "title": "MCP / Tools",
@@ -461,7 +469,8 @@
     "comingSoon": "Coming in a later phase",
     "close": "Close",
     "confirm": "Confirm",
-    "clear": "Clear"
+    "clear": "Clear",
+    "remove": "Remove"
   },
   "diagnostic": {
     "title": "Diagnostic",

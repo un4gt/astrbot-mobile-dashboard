@@ -33,7 +33,7 @@ class PersonaViewScreen extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text('System prompt',
+          Text(context.trM('persona.systemPrompt'),
               style: Theme.of(context).textTheme.titleSmall),
           const SizedBox(height: 6),
           Container(

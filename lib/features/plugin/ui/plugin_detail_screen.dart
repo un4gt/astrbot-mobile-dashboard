@@ -70,7 +70,7 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
         title: Text(p.name),
         actions: [
           IconButton(
-            tooltip: 'README',
+            tooltip: context.trM('plugins.readme'),
             onPressed: () => context.push(
               '/plugins/readme',
               extra: {'name': p.name, 'repo': p.repo},
@@ -79,7 +79,7 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
           ),
           if (p.repo != null && p.repo!.isNotEmpty)
             IconButton(
-              tooltip: 'Open repo',
+              tooltip: context.trM('plugins.openRepo'),
               onPressed: () => launchUrl(Uri.parse(p.repo!)),
               icon: const Icon(Icons.open_in_new),
             ),
@@ -108,7 +108,7 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
             children: [
               if (p.version.isNotEmpty) Chip(label: Text('v${p.version}')),
               if (p.author.isNotEmpty) Chip(label: Text(p.author)),
-              if (p.reserved) const Chip(label: Text('built-in')),
+              if (p.reserved) Chip(label: Text(context.trM('plugins.builtIn'))),
             ],
           ),
           const SizedBox(height: 16),
