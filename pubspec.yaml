@@ -34,6 +34,7 @@ dependencies:
 
   # UI / data
   cached_network_image: ^3.4.1
+  gif_view: ^1.0.3  # animated wallpaper support
   fl_chart: ^0.69.0
   # Phase 8 additions for Phase 10/15 features
   flutter_markdown: ^0.7.7
