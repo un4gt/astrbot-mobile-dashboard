@@ -65,20 +65,17 @@ class _WallpaperLayerState extends ConsumerState<WallpaperLayer>
             child: _buildWallpaper(context, wallpaper),
           ),
         ),
-        // Scaffolds inside the shell (each tab screen has its own) default
-        // to an opaque surface color which would cover the wallpaper.
-        // Overriding the theme's scaffoldBackgroundColor (and the nav bar's
-        // container color) to translucent values makes every nested layer
-        // see-through without touching the screens themselves.
+        // Each tab screen has its own Scaffold; their default opaque
+        // surface color would cover the wallpaper. Overriding the theme's
+        // scaffoldBackgroundColor to ONE translucent scrim (the layer lives
+        // inside the shell's body, so the shell's own scaffold paints behind
+        // the wallpaper, never on top) keeps text readable while letting the
+        // image show through every tab.
         Positioned.fill(
           child: Theme(
             data: Theme.of(context).copyWith(
               scaffoldBackgroundColor:
-                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.86),
-              navigationBarTheme: NavigationBarThemeData(
-                backgroundColor:
-                    Theme.of(context).colorScheme.surface.withValues(alpha: 0.86),
-              ),
+                  Theme.of(context).colorScheme.surface.withValues(alpha: 0.80),
             ),
             child: widget.child,
           ),

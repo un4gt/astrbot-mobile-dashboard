@@ -49,14 +49,17 @@ class HomeShell extends ConsumerWidget {
       ),
     ];
 
-    return WallpaperLayer(
-      child: Scaffold(
-        body: navigationShell,
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: navigationShell.currentIndex,
-          onDestinationSelected: _onTap,
-          destinations: destinations,
-        ),
+    return Scaffold(
+      // WallpaperLayer wraps the branch content (not the whole scaffold):
+      // this shell's own scaffold background then paints BEHIND the
+      // wallpaper while each tab's translucent scaffold paints exactly one
+      // scrim on top of it. Wrapping the outside instead would stack two
+      // scrims and hide the wallpaper almost completely.
+      body: WallpaperLayer(child: navigationShell),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: _onTap,
+        destinations: destinations,
       ),
     );
   }

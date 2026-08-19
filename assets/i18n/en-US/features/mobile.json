@@ -522,7 +522,7 @@
   "wallpaper": {
     "title": "Wallpaper",
     "set": "Set wallpaper",
-    "setSubtitle": "Pick an image or GIF from gallery/files",
+    "setSubtitle": "Background of the five main tabs; image or GIF",
     "blur": "Blur ({value})",
     "reset": "Reset to default background",
     "applied": "Wallpaper applied.",

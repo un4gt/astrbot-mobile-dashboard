@@ -522,7 +522,7 @@
   "wallpaper": {
     "title": "壁纸",
     "set": "设置壁纸",
-    "setSubtitle": "从相册或文件选择图片/GIF",
+    "setSubtitle": "设置主界面五个标签页的背景,支持图片或 GIF",
     "blur": "模糊度（{value}）",
     "reset": "恢复默认背景",
     "applied": "壁纸已应用。",
