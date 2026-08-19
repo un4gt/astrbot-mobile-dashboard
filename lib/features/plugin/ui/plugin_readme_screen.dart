@@ -7,6 +7,8 @@ library;
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -55,7 +57,7 @@ class _PluginReadmeScreenState extends ConsumerState<PluginReadmeScreen> {
     if (raw == null) {
       throw ApiException(
         kind: ApiErrorKind.unknown,
-        message: 'No README available (no repo URL).',
+        message: context.trM('plugins.readmeNoRepo'),
       );
     }
     // Probe a few likely filenames.
@@ -83,7 +85,7 @@ class _PluginReadmeScreenState extends ConsumerState<PluginReadmeScreen> {
     }
     throw ApiException(
       kind: ApiErrorKind.unknown,
-      message: 'Could not locate README.md in the repo.',
+      message: '__i18n__:plugins.readmeNotFound',
     );
   }
 
@@ -149,13 +151,21 @@ class _PluginReadmeScreenState extends ConsumerState<PluginReadmeScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      e is ApiException ? e.message : e.toString(),
+                      // _load() throws with an __i18n__:<key> marker so the
+                      // message can be localized here, where context exists.
+                      () {
+                        final msg = e is ApiException ? e.message : e.toString();
+                        if (msg.startsWith('__i18n__:')) {
+                          return context.trM(msg.substring(9));
+                        }
+                        return msg;
+                      }(),
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(height: 12),
                     OutlinedButton(
                       onPressed: _refresh,
-                      child: const Text('Retry'),
+                      child: Text(context.trM('common.retry')),
                     ),
                   ],
                 ),
@@ -164,10 +174,10 @@ class _PluginReadmeScreenState extends ConsumerState<PluginReadmeScreen> {
           }
           final content = (snap.data ?? '').trim();
           if (content.isEmpty) {
-            return const Center(
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Text('This plugin has no README.'),
+                padding: const EdgeInsets.all(24),
+                child: Text(context.trM('plugins.readmeNone')),
               ),
             );
           }

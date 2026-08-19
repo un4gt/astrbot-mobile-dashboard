@@ -149,13 +149,13 @@
     "installFromUrlHint": "Git 仓库(https://github.com/...)",
     "installFromFileHint": "从本机选 .zip 文件",
     "installUrlTitle": "从 URL 安装插件",
-    "repoLabel": "Git 仓库 URL",
+    "repoLabel": "仓库",
     "uploadingTitle": "插件上传中",
     "connecting": "连接中…",
     "installStarted": "插件安装已开始。",
     "installed": "已安装 {name}。",
     "uninstallTitle": "卸载插件?",
-    "uninstallMessage": "\"{name}\" 将被移除。这不会删除插件配置或数据。",
+    "uninstallMessage": "插件 \"{name}\" 将被移除。不会删除插件配置和数据文件。",
     "uninstalled": "已卸载 {name}。",
     "reloaded": "已重载 {name}。",
     "updateTriggered": "已为 {name} 触发更新。",
@@ -181,7 +181,18 @@
     "showReserved": "显示系统插件",
     "hideReserved": "隐藏系统插件",
     "loadErrorTitle": "插件加载出错",
-    "loadErrorHint": "详情请查看控制台日志。"
+    "loadErrorHint": "详情请查看控制台日志。",
+    "pluginSaved": "插件配置已保存。",
+    "noEditableConfig": "该插件没有可编辑配置。",
+    "badSchema": "插件返回了无法识别的配置结构。",
+    "uploading": "正在上传插件",
+    "installLabel": "安装",
+    "noRepo": "该插件没有仓库地址。",
+    "marketTitle": "插件市场",
+    "noMatch": "没有匹配的插件。",
+    "readmeNone": "该插件没有 README。",
+    "readmeNoRepo": "暂无 README(无仓库地址)。",
+    "readmeNotFound": "仓库中未找到 README.md。"
   },
   "console": {
     "title": "控制台",
@@ -210,7 +221,17 @@
     "adapterCreated": "适配器已创建。",
     "adapterSaved": "适配器已保存。",
     "newProvider": "新建提供商",
-    "editProvider": "编辑提供商"
+    "editProvider": "编辑提供商",
+    "addAdapter": "新建适配器",
+    "noTemplates": "该分类下暂无模板。",
+    "editListJson": "编辑列表 (JSON)",
+    "invalidJsonSaved": "JSON 无效,未保存改动。",
+    "enableAll": "启用全部插件",
+    "storedStar": "存储为 [\"*\"]",
+    "disableAll": "禁用全部插件",
+    "storedEmpty": "存储为 []",
+    "allPlugins": "全部插件",
+    "addProvider": "新建提供商"
   },
   "mcp": {
     "title": "MCP / 工具",
@@ -222,18 +243,18 @@
     "deleteTitle": "删除 MCP 服务器?",
     "deleteMessage": "\"{name}\" 将被移除。",
     "noServers": "暂无 MCP 服务器。",
-    "noTools": "暂无注册的工具。",
+    "noTools": "暂无已注册的工具。",
     "test": "测试",
     "testOk": "{name} 测试通过",
-    "invalidJson": "无效 JSON:{error}"
+    "invalidJson": "JSON 无效: {error}"
   },
   "persona": {
     "title": "人格",
     "newPersona": "新建人格",
     "editPersona": "编辑人格",
     "viewPersona": "人格",
-    "deleteTitle": "删除人格?",
-    "deleteMessage": "人格 \"{id}\" 将被移除。",
+    "deleteTitle": "删除人设?",
+    "deleteMessage": "人设 \"{id}\" 将被删除。",
     "empty": "暂无人格。",
     "personaId": "人格 ID",
     "systemPrompt": "系统提示词",
@@ -268,7 +289,23 @@
     "noTools": "未选择任何工具。",
     "allTools": "可用全部函数工具。",
     "presetCount": "预设对话({count} 条消息)",
-    "noPresetDialog": "暂无预设对话。"
+    "noPresetDialog": "无预设对话。",
+    "created": "人设已创建。",
+    "saved": "人设已保存。",
+    "idLabel": "人设 ID",
+    "promptMinLength": "至少 10 个字符",
+    "toolsAll": "使用全部函数工具",
+    "toolsAllHint": "存储为 tools: null",
+    "toolsCustom": "自定义选择",
+    "toolsCustomHint": "在下方选择工具子集",
+    "allLabel": "全部",
+    "chosenCount": "已选 {n} 个",
+    "pairCount": "{n} 组对话",
+    "addPair": "添加用户/助手对话组",
+    "emptyPairMsg": "第 {i} 条 {role} 消息为空。",
+    "allToolsAvailable": "全部函数工具可用。",
+    "noToolsSelected": "未选择任何工具。",
+    "toolsCount": "{n} 个工具"
   },
   "conversation": {
     "title": "对话历史",
@@ -280,18 +317,21 @@
     "deleteOneOk": "\"{title}\" 将被删除。",
     "selected": "已选 {count}",
     "deleteSelectedTitle": "删除 {count} 个对话?",
-    "deleteSelectedMessage": "这些对话将被永久删除。",
+    "deleteSelectedMessage": "所选对话将被永久删除。",
     "deletedSummary": "成功 {ok},失败 {failed}。",
     "noMessages": "暂无消息。",
     "messageTypes": {
       "GroupMessage": "群消息",
       "FriendMessage": "好友消息",
       "OfficialDocument": "官方文档"
-    }
+    },
+    "deleteSelected": "删除所选",
+    "editTitle": "编辑标题",
+    "searchHint": "搜索标题或内容"
   },
   "session": {
     "title": "会话规则",
-    "addRule": "添加规则",
+    "addRule": "新增规则",
     "editRule": "编辑规则",
     "deleteTitle": "删除规则?",
     "deleteMessage": "{umo} 的所有覆盖配置将被移除。",
@@ -299,7 +339,7 @@
     "noRules": "暂无会话级规则。\n点击\"添加规则\"为某个 UMO 设置覆盖。",
     "deleteEntire": "删除整条规则",
     "pickActiveUmo": "选择一个活跃 UMO",
-    "noUmos": "暂无尚未规则化的活跃 UMO。",
+    "noUmos": "暂无未配置规则的会话。",
     "loadError": "加载失败。",
     "saveSuccess": "已保存。",
     "service": "Service",
@@ -318,22 +358,29 @@
     "kb": "知识库",
     "noKb": "暂无可用知识库。",
     "topK": "Top-K",
-    "rerank": "Rerank",
+    "rerank": "重排序",
     "savedKey": "已保存 {key}。",
-    "clearedKey": "已清除 {key}。"
+    "clearedKey": "已清除 {key}。",
+    "rulesTitle": "会话规则",
+    "deleteEntireRule": "删除整条规则",
+    "defaultOption": "(默认)",
+    "followConfig": "(跟随配置文件)",
+    "sessionIsolated": "会话隔离的历史",
+    "noKbs": "暂无可用知识库。"
   },
   "kb": {
     "title": "知识库",
     "deleteTitle": "删除知识库?",
-    "deleteMessage": "\"{name}\" 及其所有文档/分块将被永久删除。",
-    "empty": "暂无知识库。\n请先在网页端创建,然后回到这里浏览或测试检索。",
-    "retrievalTest": "测试检索",
+    "deleteMessage": "知识库 \"{name}\" 将被删除。此操作不可撤销。",
+    "empty": "暂无知识库。\n可先在 Web 端创建,再回到这里浏览和测试检索。",
+    "retrievalTest": "检索测试 - {name}",
     "retrievalTestTitle": "检索测试  -  {name}",
     "query": "查询",
     "search": "搜索",
     "searching": "搜索中…",
     "noResults": "暂无结果。",
-    "docCounter": "{docs} 文档 · {chunks} 分块"
+    "docCounter": "{docs} 文档 · {chunks} 分块",
+    "testRetrieval": "测试检索"
   },
   "system": {
     "aboutUpdate": "关于 & 更新",
@@ -352,7 +399,8 @@
     "restartRequested": "已发起重启。",
     "project": "项目",
     "github": "GitHub 仓库",
-    "documentation": "官方文档"
+    "documentation": "官方文档",
+    "appVersion": "应用版本: {version} ({build})"
   },
   "chat": {
     "title": "聊天",
@@ -411,7 +459,9 @@
     "ofTotalChosen": "已选 {chosen} / {total}",
     "allPlugins": "全部插件",
     "comingSoon": "后续阶段接入",
-    "close": "关闭"
+    "close": "关闭",
+    "confirm": "确认",
+    "clear": "清除"
   },
   "diagnostic": {
     "title": "诊断",

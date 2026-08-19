@@ -3,6 +3,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,7 +19,7 @@ class SelectPlatformTemplateScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bundle = ref.watch(configBundleProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text('Add adapter')),
+      appBar: AppBar(title: Text(context.trM('config.newAdapter'))),
       body: bundle.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(
@@ -26,11 +28,11 @@ class SelectPlatformTemplateScreen extends ConsumerWidget {
         data: (b) {
           final tpls = b.platformTemplates;
           if (tpls.isEmpty) {
-            return const Center(
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(24),
+                padding: const EdgeInsets.all(24),
                 child: Text(
-                  'No platform templates returned by the server.',
+                  context.trM('config.noTemplates'),
                   textAlign: TextAlign.center,
                 ),
               ),

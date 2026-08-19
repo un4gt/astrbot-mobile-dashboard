@@ -4,6 +4,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/i18n/app_localizations.dart';
+
 class DictConfigField extends StatefulWidget {
   const DictConfigField({
     super.key,
@@ -188,14 +190,14 @@ class _DictEditorSheetState extends State<_DictEditorSheet> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: Text(context.trM('common.cancel')),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: FilledButton(
                       onPressed: _save,
-                      child: const Text('Save'),
+                      child: Text(context.trM('common.save')),
                     ),
                   ),
                 ],

@@ -4,6 +4,8 @@ library;
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -73,7 +75,7 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
     final tools = ref.watch(functionToolsProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('MCP / Tools'),
+        title: Text(context.trM('mcp.title')),
         bottom: TabBar(
           controller: _tabCtrl,
           tabs: const [
@@ -86,7 +88,7 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
           ? FloatingActionButton.extended(
               onPressed: () => _showServerDialog(),
               icon: const Icon(Icons.add),
-              label: const Text('Add server'),
+              label: Text(context.trM('mcp.addServer')),
             )
           : null,
       body: TabBarView(
@@ -106,10 +108,10 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
           Center(child: Text(e is ApiException ? e.message : e.toString())),
       data: (list) {
         if (list.isEmpty) {
-          return const Center(
+          return Center(
             child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Text('No MCP servers yet.'),
+              padding: const EdgeInsets.all(24),
+              child: Text(context.trM('mcp.noServers')),
             ),
           );
         }
@@ -154,7 +156,7 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
                         await ref.read(mcpServiceProvider).testServer(s.raw);
                         if (mounted) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Test OK for ${s.name}')),
+                            SnackBar(content: Text(context.trM('mcp.testOk', params: {'name': s.name}))),
                           );
                         }
                       } on ApiException catch (e) {
@@ -188,10 +190,10 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
           Center(child: Text(e is ApiException ? e.message : e.toString())),
       data: (list) {
         if (list.isEmpty) {
-          return const Center(
+          return Center(
             child: Padding(
-              padding: EdgeInsets.all(24),
-              child: Text('No tools registered.'),
+              padding: const EdgeInsets.all(24),
+              child: Text(context.trM('mcp.noTools')),
             ),
           );
         }
@@ -250,7 +252,7 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(context.trM('common.cancel')),
           ),
           FilledButton(
             onPressed: () async {
@@ -268,12 +270,12 @@ class _ToolUseScreenState extends ConsumerState<ToolUseScreen>
               } catch (e) {
                 if (ctx.mounted) {
                   ScaffoldMessenger.of(ctx).showSnackBar(
-                    SnackBar(content: Text('Invalid JSON: $e')),
+                    SnackBar(content: Text(ctx.trM('mcp.invalidJson', params: {'error': e.toString()}))),
                   );
                 }
               }
             },
-            child: const Text('Save'),
+            child: Text(context.trM('common.save')),
           ),
         ],
       ),

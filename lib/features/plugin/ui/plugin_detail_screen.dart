@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,7 +45,7 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
       await ref.read(pluginServiceProvider).savePluginConfig(_name, next);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Plugin config saved.')),
+          SnackBar(content: Text(context.trM('plugins.pluginSaved'))),
         );
       }
     } on ApiException catch (e) {
@@ -89,7 +91,7 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
                     height: 18,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   )
-                : const Text('Save'),
+                : Text(context.trM('common.save')),
           ),
         ],
       ),
@@ -132,9 +134,9 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
               }
               final data = snap.data;
               if (data == null) {
-                return const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text('No editable config for this plugin.'),
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(context.trM('plugins.noEditableConfig')),
                 );
               }
               // Server returns {config, metadata} where metadata is wrapped
@@ -152,9 +154,9 @@ class _PluginDetailScreenState extends ConsumerState<PluginDetailScreen> {
                 }
               }
               if (config == null || schema == null) {
-                return const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Text('Plugin returned an unrecognized schema shape.'),
+                return Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(context.trM('plugins.badSchema')),
                 );
               }
               return ConfigForm(

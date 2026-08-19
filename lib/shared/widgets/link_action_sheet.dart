@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../core/i18n/app_localizations.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,7 +22,7 @@ Future<void> showLinkActionSheet(
         children: [
           ListTile(
             leading: const Icon(Icons.open_in_browser),
-            title: const Text('Open in browser'),
+            title: Text(context.trM('common.openInBrowser')),
             subtitle: Text(
               href,
               maxLines: 1,
@@ -35,20 +37,20 @@ Future<void> showLinkActionSheet(
           ),
           ListTile(
             leading: const Icon(Icons.copy_outlined),
-            title: const Text('Copy link'),
+            title: Text(context.trM('common.copyLink')),
             onTap: () async {
               Navigator.pop(sheetCtx);
               await Clipboard.setData(ClipboardData(text: href));
               if (context.mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Link copied.')),
+                  SnackBar(content: Text(context.trM('common.linkCopied'))),
                 );
               }
             },
           ),
           ListTile(
             leading: const Icon(Icons.share_outlined),
-            title: const Text('Share…'),
+            title: Text(context.trM('common.share')),
             onTap: () async {
               Navigator.pop(sheetCtx);
               await Share.share(href);

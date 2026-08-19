@@ -7,6 +7,8 @@ library;
 
 import 'package:flutter/material.dart';
 
+import '../../../../core/i18n/app_localizations.dart';
+
 class PickerEntry {
   final String id;
   final String title;
@@ -203,7 +205,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('Cancel'),
+                      child: Text(context.trM('common.cancel')),
                     ),
                   ),
                   const SizedBox(width: 8),
@@ -216,7 +218,7 @@ class _PickerSheetState extends State<_PickerSheet> {
                           Navigator.pop(context, _single);
                         }
                       },
-                      child: const Text('Confirm'),
+                      child: Text(context.trM('common.confirm')),
                     ),
                   ),
                 ],

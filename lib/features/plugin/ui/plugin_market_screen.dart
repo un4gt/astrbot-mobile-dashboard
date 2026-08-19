@@ -3,6 +3,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -24,7 +26,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
     final repo = p.repo;
     if (repo == null || repo.isEmpty) {
       ScaffoldMessenger.of(ctx).showSnackBar(
-        const SnackBar(content: Text('Plugin has no repo URL.')),
+        SnackBar(content: Text(context.trM('plugins.noRepoUrl'))),
       );
       return;
     }
@@ -33,7 +35,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
       ref.invalidate(installedPluginsProvider);
       if (ctx.mounted) {
         ScaffoldMessenger.of(ctx).showSnackBar(
-          SnackBar(content: Text('Installing ${p.name}...')),
+          SnackBar(content: Text(ctx.trM('plugins.installing', params: {'name': p.name}))),
         );
       }
     } on ApiException catch (e) {
@@ -53,7 +55,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
     final market = ref.watch(pluginMarketProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Plugin marketplace'),
+        title: Text(context.trM('plugins.marketTitle')),
         actions: [
           IconButton(
             tooltip: 'Refresh',
@@ -96,7 +98,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
                             p.tags.any((t) => t.toLowerCase().contains(_query));
                       }).toList();
                 if (filtered.isEmpty) {
-                  return const Center(child: Text('No matching plugins.'));
+                  return Center(child: Text(context.trM('plugins.noMatch')));
                 }
                 return ListView.separated(
                   padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -165,7 +167,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
                                     onPressed: () =>
                                         launchUrl(Uri.parse(p.repo!)),
                                     icon: const Icon(Icons.open_in_new),
-                                    label: const Text('Repo'),
+                                    label: Text(context.trM('plugins.repoLabel')),
                                   ),
                                 TextButton.icon(
                                   onPressed: () => context.push(
@@ -179,7 +181,7 @@ class _PluginMarketScreenState extends ConsumerState<PluginMarketScreen> {
                                 FilledButton.tonalIcon(
                                   onPressed: () => _install(context, p),
                                   icon: const Icon(Icons.download),
-                                  label: const Text('Install'),
+                                  label: Text(context.trM('plugins.installLabel')),
                                 ),
                               ],
                             ),

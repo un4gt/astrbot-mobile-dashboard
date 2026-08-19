@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/api/api_exception.dart';
@@ -17,11 +19,10 @@ class KbListScreen extends ConsumerWidget {
   Future<void> _delete(BuildContext ctx, WidgetRef ref, KnowledgeBase kb) async {
     final ok = await showConfirmDialog(
       context: ctx,
-      title: 'Delete knowledge base?',
-      message:
-          '"${kb.name}" and all its documents/chunks will be removed permanently.',
+      title: ctx.trM('kb.deleteTitle'),
+      message: ctx.trM('kb.deleteMessage', params: {'name': kb.name}),
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: ctx.trM('common.delete'),
     );
     if (!ok) return;
     try {
@@ -59,7 +60,7 @@ class KbListScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Retrieval test  -  ${kb.name}',
+                    Text(sheetCtx.trM('kb.retrievalTestTitle', params: {'name': kb.name}),
                         style: Theme.of(sheetCtx).textTheme.titleMedium),
                     const SizedBox(height: 12),
                     Row(
@@ -101,7 +102,7 @@ class KbListScreen extends ConsumerWidget {
                                   height: 18,
                                   child:
                                       CircularProgressIndicator(strokeWidth: 2))
-                              : const Text('Search'),
+                              : Text(sheetCtx.trM('kb.search')),
                         ),
                       ],
                     ),
@@ -114,7 +115,7 @@ class KbListScreen extends ConsumerWidget {
                       child: hits.isEmpty
                           ? Center(
                               child: Text(
-                                busy ? 'Searching…' : 'No results yet.',
+                                busy ? sheetCtx.trM('kb.searching') : sheetCtx.trM('kb.noResults'),
                                 style: TextStyle(
                                     color: Theme.of(sheetCtx)
                                         .colorScheme
@@ -151,7 +152,7 @@ class KbListScreen extends ConsumerWidget {
     final list = ref.watch(kbListProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Knowledge Base'),
+        title: Text(context.trM('kb.title')),
         actions: [
           IconButton(
             tooltip: 'Refresh',
@@ -202,7 +203,7 @@ class KbListScreen extends ConsumerWidget {
                   actions: [
                     ItemCardAction(
                       icon: Icons.search,
-                      label: 'Test retrieval',
+                      label: context.trM('kb.testRetrieval'),
                       onSelected: () => _retrievalTest(context, ref, kb),
                     ),
                     ItemCardAction(

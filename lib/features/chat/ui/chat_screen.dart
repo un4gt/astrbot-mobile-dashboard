@@ -77,7 +77,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     final result = await showDialog<String?>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Rename session'),
+        title: Text(context.trM('chat.renameSession')),
         content: TextField(
           controller: ctrl,
           autofocus: true,
@@ -86,11 +86,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, null),
-            child: const Text('Cancel'),
+            child: Text(context.trM('common.cancel')),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, ctrl.text.trim()),
-            child: const Text('Save'),
+            child: Text(context.trM('common.save')),
           ),
         ],
       ),

@@ -2,6 +2,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,10 +18,10 @@ class PersonaListScreen extends ConsumerWidget {
   Future<void> _delete(BuildContext ctx, WidgetRef ref, Persona p) async {
     final ok = await showConfirmDialog(
       context: ctx,
-      title: 'Delete persona?',
-      message: 'Persona "${p.id}" will be removed.',
+      title: ctx.trM('persona.deleteTitle'),
+      message: ctx.trM('persona.deleteMessage', params: {'id': p.id}),
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: ctx.trM('common.delete'),
     );
     if (!ok) return;
     try {
@@ -42,7 +44,7 @@ class PersonaListScreen extends ConsumerWidget {
     final personas = ref.watch(personasProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Persona'),
+        title: Text(context.trM('persona.title')),
         actions: [
           IconButton(
             tooltip: 'Refresh',
@@ -54,7 +56,7 @@ class PersonaListScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => context.push('/more/persona/edit'),
         icon: const Icon(Icons.add),
-        label: const Text('New persona'),
+        label: Text(context.trM('persona.newPersona')),
       ),
       body: personas.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -62,10 +64,10 @@ class PersonaListScreen extends ConsumerWidget {
             Center(child: Text(e is ApiException ? e.message : e.toString())),
         data: (list) {
           if (list.isEmpty) {
-            return const Center(
+            return Center(
               child: Padding(
-                padding: EdgeInsets.all(24),
-                child: Text('No personas yet.'),
+                padding: const EdgeInsets.all(24),
+                child: Text(context.trM('persona.empty')),
               ),
             );
           }

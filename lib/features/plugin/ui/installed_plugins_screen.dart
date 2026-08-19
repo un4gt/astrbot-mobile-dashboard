@@ -91,7 +91,7 @@ class _InstalledPluginsScreenState
     try {
       await ref.read(pluginServiceProvider).reload(p.name);
       ref.invalidate(installedPluginsProvider);
-      if (ctx.mounted) _snack(ctx, 'Reloaded ${p.name}.');
+      if (ctx.mounted) _snack(ctx, ctx.trM('plugins.reloaded', params: {'name': p.name}));
     } on ApiException catch (e) {
       if (ctx.mounted) _snack(ctx, e.message, error: true);
     }
@@ -101,7 +101,7 @@ class _InstalledPluginsScreenState
     try {
       await ref.read(pluginServiceProvider).update(p.name);
       ref.invalidate(installedPluginsProvider);
-      if (ctx.mounted) _snack(ctx, 'Update triggered for ${p.name}.');
+      if (ctx.mounted) _snack(ctx, ctx.trM('plugins.updateTriggered', params: {'name': p.name}));
     } on ApiException catch (e) {
       if (ctx.mounted) _snack(ctx, e.message, error: true);
     }
@@ -111,17 +111,17 @@ class _InstalledPluginsScreenState
       BuildContext ctx, WidgetRef ref, InstalledPlugin p) async {
     final ok = await showConfirmDialog(
       context: ctx,
-      title: 'Uninstall plugin?',
+      title: ctx.trM('plugins.uninstallTitle'),
       message:
           '"${p.name}" will be removed. This does not delete plugin config or data files.',
       destructive: true,
-      confirmLabel: 'Uninstall',
+      confirmLabel: ctx.trM('plugins.actionUninstall'),
     );
     if (!ok) return;
     try {
       await ref.read(pluginServiceProvider).uninstall(p.name);
       ref.invalidate(installedPluginsProvider);
-      if (ctx.mounted) _snack(ctx, 'Uninstalled ${p.name}.');
+      if (ctx.mounted) _snack(ctx, ctx.trM('plugins.uninstalled', params: {'name': p.name}));
     } on ApiException catch (e) {
       if (ctx.mounted) _snack(ctx, e.message, error: true);
     }
@@ -298,7 +298,7 @@ Future<void> _pickAndUpload(BuildContext context, WidgetRef ref) async {
     context: context,
     barrierDismissible: false,
     builder: (ctx) => AlertDialog(
-      title: const Text('Uploading plugin'),
+      title: Text(context.trM('plugins.uploadingTitle')),
       content: ValueListenableBuilder<double>(
         valueListenable: progressNotifier,
         builder: (_, p, _) => Column(
@@ -328,7 +328,7 @@ Future<void> _pickAndUpload(BuildContext context, WidgetRef ref) async {
     ref.invalidate(installedPluginsProvider);
     if (context.mounted) {
       Navigator.of(context, rootNavigator: true).pop();
-      messenger.showSnackBar(SnackBar(content: Text('Installed $name.')));
+      messenger.showSnackBar(SnackBar(content: Text(context.trM('plugins.installed', params: {'name': name}))));
     }
   } on ApiException catch (e) {
     if (context.mounted) {
@@ -355,7 +355,7 @@ Future<void> _showInstallUrlDialog(
     context: context,
     builder: (ctx) => StatefulBuilder(
       builder: (ctx, setState) => AlertDialog(
-        title: const Text('Install plugin from URL'),
+        title: Text(context.trM('plugins.installUrlTitle')),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -378,7 +378,7 @@ Future<void> _showInstallUrlDialog(
         actions: [
           TextButton(
             onPressed: busy ? null : () => Navigator.pop(ctx),
-            child: const Text('Cancel'),
+            child: Text(context.trM('common.cancel')),
           ),
           FilledButton(
             onPressed: busy
@@ -401,8 +401,8 @@ Future<void> _showInstallUrlDialog(
                       if (ctx.mounted) {
                         Navigator.pop(ctx);
                         ScaffoldMessenger.of(ctx).showSnackBar(
-                          const SnackBar(
-                            content: Text('Plugin install started.'),
+                          SnackBar(
+                            content: Text(context.trM('plugins.installStarted')),
                           ),
                         );
                       }
@@ -415,7 +415,7 @@ Future<void> _showInstallUrlDialog(
             child: busy
                 ? const SizedBox(
                     width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
-                : const Text('Install'),
+                : Text(context.trM('plugins.installLabel')),
           ),
         ],
       ),

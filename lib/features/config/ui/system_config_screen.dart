@@ -175,7 +175,7 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
               });
             _ensureTabs(groupEntries.length);
             if (groupEntries.isEmpty) {
-              return const Center(child: Text('No config metadata.'));
+              return Center(child: Text(context.trM('config.noMetadata')));
             }
             return Column(
               children: [
@@ -227,7 +227,7 @@ class _SystemConfigScreenState extends ConsumerState<SystemConfigScreen>
     if (groupMeta is! Map) return const SizedBox.shrink();
     final sections = groupMeta['metadata'];
     if (sections is! Map) {
-      return const Center(child: Text('No sections in this group.'));
+      return Center(child: Text(context.trM('config.noSections')));
     }
     final entries = sections.entries.toList();
     return ListView.builder(

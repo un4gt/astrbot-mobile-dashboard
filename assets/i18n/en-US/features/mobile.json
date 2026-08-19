@@ -149,13 +149,13 @@
     "installFromUrlHint": "Git repository (https://github.com/...)",
     "installFromFileHint": "Pick a .zip from this device",
     "installUrlTitle": "Install plugin from URL",
-    "repoLabel": "Git repository URL",
+    "repoLabel": "Repo",
     "uploadingTitle": "Uploading plugin",
     "connecting": "Connecting…",
     "installStarted": "Plugin install started.",
     "installed": "Installed {name}.",
     "uninstallTitle": "Uninstall plugin?",
-    "uninstallMessage": "\"{name}\" will be removed. This does not delete plugin config or data files.",
+    "uninstallMessage": "Plugin \"{name}\" will be removed. This does not delete plugin config or data files.",
     "uninstalled": "Uninstalled {name}.",
     "reloaded": "Reloaded {name}.",
     "updateTriggered": "Update triggered for {name}.",
@@ -171,7 +171,7 @@
     "search": "Search plugins",
     "noMatching": "No matching plugins.",
     "noRepoUrl": "Plugin has no repo URL.",
-    "installing": "Installing {name}…",
+    "installing": "Installing {name}...",
     "readme": {
       "header": "{name} · README",
       "noReadme": "This plugin has no README.",
@@ -181,7 +181,18 @@
     "showReserved": "Show system plugins",
     "hideReserved": "Hide system plugins",
     "loadErrorTitle": "Plugin load error",
-    "loadErrorHint": "Check the console log for details."
+    "loadErrorHint": "Check the console log for details.",
+    "pluginSaved": "Plugin config saved.",
+    "noEditableConfig": "No editable config for this plugin.",
+    "badSchema": "Plugin returned an unrecognized schema shape.",
+    "uploading": "Uploading plugin",
+    "installLabel": "Install",
+    "noRepo": "Plugin has no repo URL.",
+    "marketTitle": "Plugin marketplace",
+    "noMatch": "No matching plugins.",
+    "readmeNone": "This plugin has no README.",
+    "readmeNoRepo": "No README available (no repo URL).",
+    "readmeNotFound": "Could not locate README.md in the repo."
   },
   "console": {
     "title": "Console",
@@ -210,7 +221,17 @@
     "adapterCreated": "Adapter created.",
     "adapterSaved": "Adapter saved.",
     "newProvider": "New provider",
-    "editProvider": "Edit provider"
+    "editProvider": "Edit provider",
+    "addAdapter": "Add adapter",
+    "noTemplates": "No templates in this category.",
+    "editListJson": "Edit list (JSON)",
+    "invalidJsonSaved": "Invalid JSON, no changes saved.",
+    "enableAll": "Enable all plugins",
+    "storedStar": "Stored as [\"*\"]",
+    "disableAll": "Disable all plugins",
+    "storedEmpty": "Stored as []",
+    "allPlugins": "All plugins",
+    "addProvider": "Add provider"
   },
   "mcp": {
     "title": "MCP / Tools",
@@ -268,7 +289,23 @@
     "noTools": "No tools selected.",
     "allTools": "All function tools available.",
     "presetCount": "Preset dialog ({count} message(s))",
-    "noPresetDialog": "No preset dialog."
+    "noPresetDialog": "No preset dialog.",
+    "created": "Persona created.",
+    "saved": "Persona saved.",
+    "idLabel": "Persona ID",
+    "promptMinLength": "At least 10 characters",
+    "toolsAll": "Use all function tools",
+    "toolsAllHint": "Stored as tools: null",
+    "toolsCustom": "Custom selection",
+    "toolsCustomHint": "Pick the subset of tools below",
+    "allLabel": "All",
+    "chosenCount": "{n} chosen",
+    "pairCount": "{n} pair(s)",
+    "addPair": "Add user/assistant pair",
+    "emptyPairMsg": "Empty {role} message at position {i}.",
+    "allToolsAvailable": "All function tools available.",
+    "noToolsSelected": "No tools selected.",
+    "toolsCount": "{n} tool(s)"
   },
   "conversation": {
     "title": "Conversations",
@@ -287,7 +324,10 @@
       "GroupMessage": "GroupMessage",
       "FriendMessage": "FriendMessage",
       "OfficialDocument": "OfficialDocument"
-    }
+    },
+    "deleteSelected": "Delete selected",
+    "editTitle": "Edit title",
+    "searchHint": "Search title or content"
   },
   "session": {
     "title": "Session rules",
@@ -320,20 +360,27 @@
     "topK": "Top-K",
     "rerank": "Rerank",
     "savedKey": "Saved {key}.",
-    "clearedKey": "Cleared {key}."
+    "clearedKey": "Cleared {key}.",
+    "rulesTitle": "Session rules",
+    "deleteEntireRule": "Delete entire rule",
+    "defaultOption": "(default)",
+    "followConfig": "(follow config file)",
+    "sessionIsolated": "Session-isolated history",
+    "noKbs": "No knowledge bases available."
   },
   "kb": {
     "title": "Knowledge Base",
     "deleteTitle": "Delete knowledge base?",
-    "deleteMessage": "\"{name}\" and all its documents/chunks will be removed permanently.",
+    "deleteMessage": "Knowledge base \"{name}\" will be deleted. This cannot be undone.",
     "empty": "No knowledge bases.\nCreate one from the web dashboard, then return here to browse and test retrieval.",
-    "retrievalTest": "Test retrieval",
+    "retrievalTest": "Retrieval test - {name}",
     "retrievalTestTitle": "Retrieval test  -  {name}",
     "query": "Query",
     "search": "Search",
     "searching": "Searching…",
     "noResults": "No results yet.",
-    "docCounter": "{docs} doc(s) · {chunks} chunk(s)"
+    "docCounter": "{docs} doc(s) · {chunks} chunk(s)",
+    "testRetrieval": "Test retrieval"
   },
   "system": {
     "aboutUpdate": "About & Update",
@@ -352,7 +399,8 @@
     "restartRequested": "Restart requested.",
     "project": "Project",
     "github": "GitHub repository",
-    "documentation": "Documentation"
+    "documentation": "Documentation",
+    "appVersion": "App version: {version} ({build})"
   },
   "chat": {
     "title": "Chat",
@@ -411,7 +459,9 @@
     "ofTotalChosen": "{chosen} of {total} chosen",
     "allPlugins": "All plugins",
     "comingSoon": "Coming in a later phase",
-    "close": "Close"
+    "close": "Close",
+    "confirm": "Confirm",
+    "clear": "Clear"
   },
   "diagnostic": {
     "title": "Diagnostic",

@@ -4,6 +4,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -48,8 +50,8 @@ class SessionRulesScreen extends ConsumerWidget {
               ),
               const Divider(height: 1),
               if (candidates.isEmpty)
-                const Expanded(
-                  child: Center(child: Text('No UMOs without a rule yet.')),
+                Expanded(
+                  child: Center(child: Text(context.trM('session.noUmos'))),
                 )
               else
                 Expanded(
@@ -119,7 +121,7 @@ class SessionRulesScreen extends ConsumerWidget {
     final page = ref.watch(sessionRulesProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Session rules'),
+        title: Text(context.trM('session.rulesTitle')),
         actions: [
           IconButton(
             tooltip: 'Refresh',
@@ -131,7 +133,7 @@ class SessionRulesScreen extends ConsumerWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _addRule(context, ref),
         icon: const Icon(Icons.add),
-        label: const Text('Add rule'),
+        label: Text(context.trM('session.addRule')),
       ),
       body: page.when(
         loading: () => const Center(child: CircularProgressIndicator()),

@@ -3,6 +3,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/persona_service.dart';
@@ -24,7 +26,7 @@ class PersonaViewScreen extends StatelessWidget {
             onPressed: () =>
                 context.push('/more/persona/edit', extra: persona),
             icon: const Icon(Icons.edit_outlined),
-            label: const Text('Edit'),
+            label: Text(context.trM('common.edit')),
           ),
         ],
       ),
@@ -49,9 +51,9 @@ class PersonaViewScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.titleSmall),
           const SizedBox(height: 6),
           if (persona['tools'] == null)
-            const Text('All function tools available.')
+            Text(context.trM('persona.allTools'))
           else if (p.tools.isEmpty)
-            const Text('No tools selected.')
+            Text(context.trM('persona.noTools'))
           else
             Wrap(
               spacing: 6,
@@ -70,7 +72,7 @@ class PersonaViewScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.titleSmall),
           const SizedBox(height: 6),
           if (dialogs.isEmpty)
-            const Text('No preset dialog.')
+            Text(context.trM('persona.noPrompt'))
           else
             for (var i = 0; i < dialogs.length; i++)
               Padding(

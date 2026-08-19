@@ -5,6 +5,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -40,7 +42,7 @@ class _ConversationDetailScreenState
     final result = await showDialog<String?>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Edit title'),
+        title: Text(context.trM('conversation.editTitle')),
         content: TextField(
           controller: ctrl,
           autofocus: true,
@@ -49,11 +51,11 @@ class _ConversationDetailScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx, null),
-            child: const Text('Cancel'),
+            child: Text(context.trM('common.cancel')),
           ),
           FilledButton(
             onPressed: () => Navigator.pop(ctx, ctrl.text.trim()),
-            child: const Text('Save'),
+            child: Text(context.trM('common.save')),
           ),
         ],
       ),
@@ -167,7 +169,7 @@ class _ConversationDetailScreenState
                 }
                 final history = snap.data?.history ?? const [];
                 if (history.isEmpty) {
-                  return const Center(child: Text('No messages.'));
+                  return Center(child: Text(context.trM('conversation.noMessages')));
                 }
                 return ListView.builder(
                   padding: const EdgeInsets.fromLTRB(12, 12, 12, 24),

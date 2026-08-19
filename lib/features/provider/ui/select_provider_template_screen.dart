@@ -2,6 +2,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,7 +22,7 @@ class SelectProviderTemplateScreen extends ConsumerWidget {
       length: providerTypes.length + 1,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Add provider'),
+          title: Text(context.trM('config.newProvider')),
           bottom: TabBar(
             isScrollable: true,
             tabs: [
@@ -69,10 +71,10 @@ class SelectProviderTemplateScreen extends ConsumerWidget {
       ..sort((a, b) => a.key.compareTo(b.key));
 
     if (entries.isEmpty) {
-      return const Center(
+      return Center(
         child: Padding(
-          padding: EdgeInsets.all(24),
-          child: Text('No templates in this category.'),
+          padding: const EdgeInsets.all(24),
+          child: Text(context.trM('config.noTemplates')),
         ),
       );
     }

@@ -3,6 +3,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -108,10 +110,10 @@ class _ConversationListScreenState
   Future<void> _deleteSingle(ConversationSummary c) async {
     final ok = await showConfirmDialog(
       context: context,
-      title: 'Delete conversation?',
+      title: context.trM('conversation.deleteTitle'),
       message: 'Conversation "${c.title}" will be removed permanently.',
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: context.trM('common.delete'),
     );
     if (!ok) return;
     try {
@@ -129,9 +131,9 @@ class _ConversationListScreenState
     final ok = await showConfirmDialog(
       context: context,
       title: 'Delete ${_selectedKeys.length} conversations?',
-      message: 'These conversations will be removed permanently.',
+      message: context.trM('conversation.deleteSelectedMessage'),
       destructive: true,
-      confirmLabel: 'Delete',
+      confirmLabel: context.trM('common.delete'),
     );
     if (!ok) return;
     final batch = _items
@@ -208,7 +210,7 @@ class _ConversationListScreenState
         actions: _selecting
             ? [
                 IconButton(
-                  tooltip: 'Delete selected',
+                  tooltip: context.trM('conversation.deleteSelected'),
                   onPressed: _deleteSelected,
                   icon: const Icon(Icons.delete_outline),
                 ),
@@ -250,7 +252,7 @@ class _ConversationListScreenState
                             : (_page < _totalPages
                                 ? OutlinedButton(
                                     onPressed: _loadMore,
-                                    child: const Text('Load more'),
+                                    child: Text(context.trM('common.loadMore')),
                                   )
                                 : const SizedBox.shrink()),
                       ),
@@ -376,9 +378,9 @@ class _ConversationListScreenState
         children: [
           TextField(
             controller: _searchCtrl,
-            decoration: const InputDecoration(
-              prefixIcon: Icon(Icons.search),
-              hintText: 'Search title or content',
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              hintText: context.trM('conversation.searchHint'),
               isDense: true,
               border: OutlineInputBorder(),
             ),

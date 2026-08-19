@@ -9,6 +9,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -125,7 +127,7 @@ class _SessionRuleEditorScreenState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit rule')),
+      appBar: AppBar(title: Text(context.trM('session.editRule'))),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
         children: [
@@ -226,7 +228,7 @@ class _SessionRuleEditorScreenState
               }
             },
             icon: const Icon(Icons.delete_outline),
-            label: const Text('Delete entire rule'),
+            label: Text(context.trM('session.deleteEntireRule')),
             style: OutlinedButton.styleFrom(
               foregroundColor: Theme.of(context).colorScheme.error,
             ),
@@ -304,7 +306,7 @@ class _ServiceSectionState extends State<_ServiceSection> {
               isDense: true,
             ),
             items: [
-              const DropdownMenuItem(value: null, child: Text('(default)')),
+              DropdownMenuItem(value: null, child: Text(context.trM('session.defaultOption'))),
               for (final p in widget.personas)
                 DropdownMenuItem(value: p, child: Text(p)),
             ],
@@ -314,7 +316,7 @@ class _ServiceSectionState extends State<_ServiceSection> {
           SwitchListTile(
             value: _enableSession ?? false,
             onChanged: (v) => setState(() => _enableSession = v),
-            title: const Text('Session-isolated history'),
+            title: Text(context.trM('session.sessionIsolated')),
             contentPadding: EdgeInsets.zero,
           ),
         ],
@@ -394,7 +396,7 @@ class _ProviderSectionState extends State<_ProviderSection> {
         isDense: true,
       ),
       items: [
-        const DropdownMenuItem(value: null, child: Text('(follow config file)')),
+        DropdownMenuItem(value: null, child: Text(context.trM('session.followConfig'))),
         for (final p in options)
           DropdownMenuItem(
             value: (p['id'] ?? '').toString(),
@@ -459,7 +461,7 @@ class _PluginSectionState extends State<_PluginSection> {
           ),
           const SizedBox(height: 8),
           if (names.isEmpty)
-            const Text('No plugins available.')
+            Text(context.trM('session.noPlugins'))
           else
             Wrap(
               spacing: 6,
@@ -601,7 +603,7 @@ class _KbSectionState extends State<_KbSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (widget.available.isEmpty)
-            const Text('No knowledge bases available.')
+            Text(context.trM('session.noKbs'))
           else
             Wrap(
               spacing: 6,
@@ -626,7 +628,7 @@ class _KbSectionState extends State<_KbSection> {
           const SizedBox(height: 12),
           Row(
             children: [
-              const Text('Top-K'),
+              Text(context.trM('session.topK')),
               const SizedBox(width: 8),
               SizedBox(
                 width: 80,
@@ -644,7 +646,7 @@ class _KbSectionState extends State<_KbSection> {
                 ),
               ),
               const Spacer(),
-              const Text('Rerank'),
+              Text(context.trM('session.rerank')),
               Switch(value: _rerank, onChanged: (v) => setState(() => _rerank = v)),
             ],
           ),
@@ -691,11 +693,11 @@ class _SectionCard extends StatelessWidget {
                 if (onClear != null)
                   TextButton(
                     onPressed: onClear,
-                    child: const Text('Clear'),
+                    child: Text(context.trM('common.clear')),
                   ),
                 FilledButton.tonal(
                   onPressed: onSave,
-                  child: const Text('Save'),
+                  child: Text(context.trM('common.save')),
                 ),
               ],
             ),

@@ -6,6 +6,8 @@
 library;
 
 import 'package:flutter/material.dart';
+
+import '../../../../core/i18n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../plugin/data/plugin_service.dart';
@@ -90,19 +92,19 @@ class PluginSetSelectorField extends ConsumerWidget {
                     },
                     child: Column(
                       children: [
-                        const RadioListTile<_PluginMode>(
+                        RadioListTile<_PluginMode>(
                           value: _PluginMode.all,
-                          title: Text('Enable all plugins'),
-                          subtitle: Text('Stored as ["*"]'),
+                          title: Text(context.trM('common.enableAllPlugins')),
+                          subtitle: Text(context.trM('common.enableAllStored')),
                         ),
-                        const RadioListTile<_PluginMode>(
+                        RadioListTile<_PluginMode>(
                           value: _PluginMode.none,
-                          title: Text('Disable all plugins'),
-                          subtitle: Text('Stored as []'),
+                          title: Text(context.trM('common.disableAllPlugins')),
+                          subtitle: Text(context.trM('common.disableAllStored')),
                         ),
                         RadioListTile<_PluginMode>(
                           value: _PluginMode.custom,
-                          title: const Text('Custom selection'),
+                          title: Text(context.trM('common.customSelection')),
                           subtitle: Text(
                             activeUserPlugins.isEmpty
                                 ? 'No activated user plugins'
@@ -147,7 +149,7 @@ class PluginSetSelectorField extends ConsumerWidget {
                         Expanded(
                           child: OutlinedButton(
                             onPressed: () => Navigator.pop(sheetCtx),
-                            child: const Text('Cancel'),
+                            child: Text(context.trM('common.cancel')),
                           ),
                         ),
                         const SizedBox(width: 8),
@@ -168,7 +170,7 @@ class PluginSetSelectorField extends ConsumerWidget {
                               }
                               Navigator.pop(sheetCtx, next);
                             },
-                            child: const Text('Confirm'),
+                            child: Text(context.trM('common.confirm')),
                           ),
                         ),
                       ],
@@ -196,7 +198,7 @@ class PluginSetSelectorField extends ConsumerWidget {
         final mode = _modeOf(list);
         switch (mode) {
           case _PluginMode.all:
-            return const Text('All plugins');
+            return Text(context.trM('common.allPlugins'));
           case _PluginMode.none:
             return Text(
               '(none selected)',

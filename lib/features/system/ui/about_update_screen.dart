@@ -106,7 +106,7 @@ class _AboutUpdateScreenState extends ConsumerState<AboutUpdateScreen> {
                             if (info == null) return const SizedBox.shrink();
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 4),
-                              child: Text('App version: ${info.version} (${info.buildNumber})'),
+                              child: Text(context.trM('system.appVersion', params: {'version': info.version, 'build': info.buildNumber.toString()})),
                             );
                           },
                         ),

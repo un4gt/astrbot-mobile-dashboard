@@ -7,6 +7,8 @@ library;
 import 'dart:convert';
 import 'package:flutter/material.dart';
 
+import '../../../../core/i18n/app_localizations.dart';
+
 class ListConfigField extends StatefulWidget {
   const ListConfigField({
     super.key,
@@ -65,7 +67,7 @@ class _ListConfigFieldState extends State<ListConfigField> {
     final result = await showDialog<String>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('Edit list (JSON)'),
+        title: Text(context.trM('config.editListJson')),
         content: SingleChildScrollView(
           child: TextField(
             controller: ctrl,
@@ -75,10 +77,10 @@ class _ListConfigFieldState extends State<ListConfigField> {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('Cancel')),
+          TextButton(onPressed: () => Navigator.pop(ctx), child: Text(context.trM('common.cancel'))),
           FilledButton(
               onPressed: () => Navigator.pop(ctx, ctrl.text),
-              child: const Text('Save')),
+              child: Text(context.trM('common.save'))),
         ],
       ),
     );
@@ -92,7 +94,7 @@ class _ListConfigFieldState extends State<ListConfigField> {
     } catch (_) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Invalid JSON, no changes saved.')),
+          SnackBar(content: Text(context.trM('config.invalidJsonSaved'))),
         );
       }
     }
@@ -214,14 +216,14 @@ class _ListEditorSheetState extends State<_ListEditorSheet> {
                   Expanded(
                     child: OutlinedButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
+                      child: Text(context.trM('common.cancel')),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: FilledButton(
                       onPressed: _save,
-                      child: const Text('Save'),
+                      child: Text(context.trM('common.save')),
                     ),
                   ),
                 ],
