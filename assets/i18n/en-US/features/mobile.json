@@ -463,7 +463,11 @@
     "errPermission": "Install permission not granted. Allow this app to install apps in system settings.",
     "errInternal": "Internal error.",
     "errDownload": "Download failed.",
-    "errChecksum": "Checksum failed; the file may be incomplete."
+    "errChecksum": "Checksum failed; the file may be incomplete.",
+    "permissionTitle": "Install permission needed",
+    "permissionMessage": "Android requires the \"install unknown apps\" permission for in-app updates. Settings will open -- enable \"Allow from this source\", then come back.",
+    "permissionGoSettings": "Open settings",
+    "permissionWaiting": "Return to the app after granting to continue automatically."
   },
   "wallpaper": {
     "title": "Wallpaper",

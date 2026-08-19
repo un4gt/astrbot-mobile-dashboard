@@ -463,7 +463,11 @@
     "errPermission": "未授予安装权限，请在系统设置中允许本应用安装应用。",
     "errInternal": "内部错误。",
     "errDownload": "下载失败。",
-    "errChecksum": "校验失败，文件可能不完整。"
+    "errChecksum": "校验失败，文件可能不完整。",
+    "permissionTitle": "需要安装权限",
+    "permissionMessage": "安装更新包需要系统授予“安装未知应用”权限。即将打开系统设置，请在应用详情页开启“允许安装未知应用”后返回。",
+    "permissionGoSettings": "去设置",
+    "permissionWaiting": "授权完成后返回应用,将自动继续安装。"
   },
   "wallpaper": {
     "title": "壁纸",

@@ -3,9 +3,11 @@
 library;
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ota_update/ota_update.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../../core/i18n/app_localizations.dart';
 import '../data/update_service.dart';
@@ -65,9 +67,11 @@ Future<bool> showUpdateDialog(BuildContext context, UpdateInfo info) async {
 
 /// Download + install the APK with a progress dialog.
 ///
-/// ota_update writes the file and fires the system installer intent itself;
-/// we just surface progress and errors, then close when the install is
-/// handed off.
+/// Android 8+ requires the user to grant "install unknown apps" per
+/// application; without it the installer intent ota_update fires after the
+/// download is silently rejected. [_InstallDialog] checks the permission
+/// when it opens, walks the user to the system settings page, re-checks
+/// when they come back, and only then starts the download.
 Future<void> runInstallFlow(BuildContext context, ApkAsset asset) {
   return showDialog<void>(
     context: context,
@@ -85,16 +89,100 @@ class _InstallDialog extends StatefulWidget {
   State<_InstallDialog> createState() => _InstallDialogState();
 }
 
-class _InstallDialogState extends State<_InstallDialog> {
+class _InstallDialogState extends State<_InstallDialog>
+    with WidgetsBindingObserver {
   String _status = '';
   int _progress = 0;
   bool _error = false;
+  bool _awaitingPermission = false;
   StreamSubscription<OtaEvent>? _sub;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _status = context.trM('update.downloading');
+    Future.microtask(_ensurePermissionThenDownload);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _sub?.cancel();
+    super.dispose();
+  }
+
+  /// Android 8+ gate: without the "install unknown apps" grant the
+  /// installer intent fired after the download is silently rejected, which
+  /// is exactly the "downloaded but nothing happens" failure. Check before
+  /// downloading; if missing, send the user to the settings page and
+  /// re-check when they return.
+  Future<void> _ensurePermissionThenDownload() async {
+    if (!Platform.isAndroid) {
+      _startDownload();
+      return;
+    }
+    if ((await Permission.requestInstallPackages.status).isGranted) {
+      _startDownload();
+      return;
+    }
+    if (!mounted) return;
+    setState(() => _awaitingPermission = true);
+    final goSettings = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(context.trM('update.permissionTitle')),
+        content: Text(context.trM('update.permissionMessage')),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(context.trM('common.cancel')),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(context.trM('update.permissionGoSettings')),
+          ),
+        ],
+      ),
+    );
+    if (goSettings != true) {
+      if (mounted) Navigator.pop(context);
+      return;
+    }
+    // Lands on this app's details page; the user toggles "Allow from this
+    // source" and returns to the app. openAppSettings() may resolve
+    // immediately on some ROMs, so also re-check on every lifecycle resume.
+    _settingsLaunched = true;
+    setState(() => _status = context.trM('update.permissionWaiting'));
+    await openAppSettings();
+  }
+
+  bool _settingsLaunched = false;
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed && _settingsLaunched) {
+      _settingsLaunched = false;
+      _recheckPermissionAfterSettings();
+    }
+  }
+
+  Future<void> _recheckPermissionAfterSettings() async {
+    // Resolve strings before the async gap so nothing touches context
+    // across it.
+    final errPermission = context.trM('update.errPermission');
+    if (!mounted) return;
+    if ((await Permission.requestInstallPackages.status).isGranted) {
+      setState(() => _awaitingPermission = false);
+      _startDownload();
+    } else {
+      setState(() => _awaitingPermission = false);
+      _fail(errPermission);
+    }
+  }
+
+  void _startDownload() {
+    if (!mounted) return;
     _sub = OtaUpdate().execute(widget.asset.downloadUrl).listen(
       (event) {
         if (!mounted) return;
@@ -150,21 +238,19 @@ class _InstallDialogState extends State<_InstallDialog> {
   }
 
   @override
-  void dispose() {
-    _sub?.cancel();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(context.trM(_error ? 'update.failed' : 'update.downloading')),
+      title: Text(context.trM(_error
+          ? 'update.failed'
+          : _awaitingPermission
+              ? 'update.permissionTitle'
+              : 'update.downloading')),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(_status),
           const SizedBox(height: 12),
-          if (!_error)
+          if (!_error && !_awaitingPermission)
             LinearProgressIndicator(
               value: _progress > 0 ? _progress / 100 : null,
             ),

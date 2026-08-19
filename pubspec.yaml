@@ -25,7 +25,8 @@ dependencies:
 
   # Utilities
   crypto: ^3.0.5
-  ota_update: ^7.1.0
+  ota_update: ^7.1.0  # in-app APK self-update
+  permission_handler: ^12.0.0
   intl: ^0.20.2
   collection: ^1.18.0
   package_info_plus: ^8.0.2
