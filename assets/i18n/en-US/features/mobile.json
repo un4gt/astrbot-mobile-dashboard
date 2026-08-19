@@ -460,5 +460,14 @@
     "errInternal": "Internal error.",
     "errDownload": "Download failed.",
     "errChecksum": "Checksum failed; the file may be incomplete."
+  },
+  "wallpaper": {
+    "title": "Wallpaper",
+    "set": "Set wallpaper",
+    "setSubtitle": "Pick an image or GIF from gallery/files",
+    "blur": "Blur ({value})",
+    "reset": "Reset to default background",
+    "applied": "Wallpaper applied.",
+    "applyFailed": "Failed to apply wallpaper. Try again."
   }
 }

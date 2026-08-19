@@ -1,6 +1,7 @@
 /// Settings page -- theme, locale, change password, reset URL, logout.
 library;
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -11,6 +12,7 @@ import '../../../shared/widgets/confirm_dialog.dart';
 import '../../auth/ui/change_password_dialog.dart';
 import '../../update/data/update_service.dart';
 import '../../update/ui/update_flow.dart';
+import '../../wallpaper/wallpaper_controller.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -21,6 +23,20 @@ class SettingsScreen extends ConsumerStatefulWidget {
 
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _checkingUpdate = false;
+
+  Future<void> _pickWallpaper() async {
+    final picked = await FilePicker.platform.pickFiles(
+      type: FileType.image, // covers jpg/png/webp/gif from gallery or files
+      withData: false,
+    );
+    final path = picked?.files.single.path;
+    if (path == null) return;
+    final ok = await ref.read(wallpaperProvider.notifier).setFromFile(path);
+    if (!mounted) return;
+    _snack(ok
+        ? context.trM('wallpaper.applied')
+        : context.trM('wallpaper.applyFailed'), error: !ok);
+  }
 
   Future<void> _checkUpdate() async {
     setState(() => _checkingUpdate = true);
@@ -114,6 +130,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     final username = ref.watch(activeUsernameProvider) ?? '-';
     final autoCheckUpdate = ref.watch(autoCheckUpdateProvider);
     final checking = _checkingUpdate;
+    final wallpaper = ref.watch(wallpaperProvider);
 
     return Scaffold(
       appBar: AppBar(title: Text(context.trM('settings.title'))),
@@ -235,6 +252,41 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               ],
             ),
           ),
+          const Divider(),
+          _section(context, context.trM('wallpaper.title')),
+          ListTile(
+            leading: const Icon(Icons.wallpaper_outlined),
+            title: Text(context.trM('wallpaper.set')),
+            subtitle: Text(context.trM('wallpaper.setSubtitle')),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: _pickWallpaper,
+          ),
+          if (wallpaper.hasWallpaper) ...[
+            ListTile(
+              leading: const Icon(Icons.photo_filter_outlined),
+              title: Text(context.trM('wallpaper.blur',
+                  params: {'value': wallpaper.blur.toStringAsFixed(0)})),
+              subtitle: Slider(
+                value: wallpaper.blur,
+                max: 30,
+                divisions: 30,
+                label: wallpaper.blur.toStringAsFixed(0),
+                onChanged: (v) => ref
+                    .read(wallpaperProvider.notifier)
+                    .setBlur(v),
+              ),
+            ),
+            ListTile(
+              leading: Icon(Icons.delete_outline,
+                  color: Theme.of(context).colorScheme.error),
+              title: Text(
+                context.trM('wallpaper.reset'),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.error),
+              ),
+              onTap: () => ref.read(wallpaperProvider.notifier).clear(),
+            ),
+          ],
           const Divider(),
           _section(context, context.trM('settings.debug')),
           SwitchListTile(

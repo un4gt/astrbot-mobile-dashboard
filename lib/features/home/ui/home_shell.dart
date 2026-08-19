@@ -3,11 +3,14 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/i18n/app_localizations.dart';
+import '../../wallpaper/wallpaper_controller.dart';
+import '../../wallpaper/wallpaper_layer.dart';
 
-class HomeShell extends StatelessWidget {
+class HomeShell extends ConsumerWidget {
   const HomeShell({super.key, required this.navigationShell});
   final StatefulNavigationShell navigationShell;
 
@@ -19,7 +22,7 @@ class HomeShell extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final destinations = <NavigationDestination>[
       NavigationDestination(
         icon: const Icon(Icons.dashboard_outlined),
@@ -46,12 +49,24 @@ class HomeShell extends StatelessWidget {
         label: context.trM('more.title'),
       ),
     ];
-    return Scaffold(
-      body: navigationShell,
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: navigationShell.currentIndex,
-        onDestinationSelected: _onTap,
-        destinations: destinations,
+
+    final hasWallpaper = ref.watch(
+        wallpaperProvider.select((w) => w.hasWallpaper));
+    // See-through so the wallpaper shows through the nav shell; the tint
+    // keeps content readable on busy images.
+    final surface = Theme.of(context).colorScheme.surface;
+    final bg = hasWallpaper ? surface.withValues(alpha: 0.86) : surface;
+
+    return WallpaperLayer(
+      child: Scaffold(
+        backgroundColor: bg,
+        body: navigationShell,
+        bottomNavigationBar: NavigationBar(
+          backgroundColor: bg,
+          selectedIndex: navigationShell.currentIndex,
+          onDestinationSelected: _onTap,
+          destinations: destinations,
+        ),
       ),
     );
   }
