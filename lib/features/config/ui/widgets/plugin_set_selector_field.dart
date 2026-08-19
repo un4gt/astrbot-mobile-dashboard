@@ -38,7 +38,8 @@ class PluginSetSelectorField extends ConsumerWidget {
 
   Future<void> _open(BuildContext context, WidgetRef ref) async {
     final plugins =
-        ref.read(installedPluginsProvider).valueOrNull ?? const <InstalledPlugin>[];
+        ref.read(installedPluginsProvider).valueOrNull?.plugins ??
+            const <InstalledPlugin>[];
     // Match the Vue selector: only show activated, non-reserved plugins.
     final activeUserPlugins = plugins
         .where((p) => p.activated && !p.reserved)

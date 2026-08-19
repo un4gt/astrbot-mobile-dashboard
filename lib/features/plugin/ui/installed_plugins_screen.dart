@@ -15,18 +15,66 @@ import '../../../shared/widgets/confirm_dialog.dart';
 import '../../../shared/widgets/item_card.dart';
 import '../data/plugin_service.dart';
 
-class InstalledPluginsScreen extends ConsumerWidget {
+class InstalledPluginsScreen extends ConsumerStatefulWidget {
   const InstalledPluginsScreen({super.key});
+
+  @override
+  ConsumerState<InstalledPluginsScreen> createState() =>
+      _InstalledPluginsScreenState();
+}
+
+class _InstalledPluginsScreenState
+    extends ConsumerState<InstalledPluginsScreen> {
+  /// Web dashboard parity: built-in (reserved) plugins stay hidden until the
+  /// user opts in with the eye toggle.
+  bool _showReserved = false;
+
+  /// Last plugin-load failure notice already shown (dedupes across rebuilds).
+  String? _loadErrorShown;
 
   /// Plugin logos come back as `/api/file/<token>` -- relative to the active
   /// server. Tokens are short-lived; a failed load falls back to the icon.
-  String? _logoUrl(WidgetRef ref, InstalledPlugin p) {
+  String? _logoUrl(InstalledPlugin p) {
     final logo = p.logo;
     if (logo == null) return null;
     if (logo.startsWith('http')) return logo;
     final base = ref.read(baseUrlProvider);
     if (base == null || base.isEmpty) return null;
     return '$base$logo';
+  }
+
+  void _showLoadError(String message) {
+    if (message == _loadErrorShown) return;
+    _loadErrorShown = message;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      showDialog<void>(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          icon: Icon(Icons.error_outline,
+              color: Theme.of(ctx).colorScheme.error),
+          title: Text(context.trM('plugins.loadErrorTitle')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SelectableText(message),
+              const SizedBox(height: 12),
+              Text(
+                context.trM('plugins.loadErrorHint'),
+                style: Theme.of(ctx).textTheme.bodySmall,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text(context.trM('common.close')),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   Future<void> _toggle(BuildContext ctx, WidgetRef ref, InstalledPlugin p,
@@ -87,12 +135,22 @@ class InstalledPluginsScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
+    final ref = this.ref;
     final installed = ref.watch(installedPluginsProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(context.trM('plugins.title')),
         actions: [
+          IconButton(
+            tooltip: _showReserved
+                ? context.trM('plugins.hideReserved')
+                : context.trM('plugins.showReserved'),
+            onPressed: () => setState(() => _showReserved = !_showReserved),
+            icon: Icon(_showReserved
+                ? Icons.visibility_off_outlined
+                : Icons.visibility_outlined),
+          ),
           IconButton(
             tooltip: context.trM('plugins.marketplace'),
             onPressed: () => context.push('/plugins/market'),
@@ -114,7 +172,13 @@ class InstalledPluginsScreen extends ConsumerWidget {
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) =>
             Center(child: Text(e is ApiException ? e.message : e.toString())),
-        data: (list) {
+        data: (result) {
+          // Web dashboard parity: reserved (built-in) plugins hidden by
+          // default behind the eye toggle.
+          final list = _showReserved
+              ? result.plugins
+              : result.plugins.where((p) => !p.reserved).toList();
+          if (result.loadError != null) _showLoadError(result.loadError!);
           if (list.isEmpty) {
             return Center(
               child: Padding(
@@ -142,7 +206,7 @@ class InstalledPluginsScreen extends ConsumerWidget {
                   title: p.name,
                   subtitle: subtitle.isEmpty ? p.description : subtitle,
                   icon: Icons.extension_outlined,
-                  imageUrl: _logoUrl(ref, p),
+                  imageUrl: _logoUrl(p),
                   enabled: p.activated,
                   onEnabledChanged:
                       p.reserved ? null : (v) => _toggle(context, ref, p, v),

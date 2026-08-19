@@ -177,7 +177,11 @@
       "noReadme": "This plugin has no README.",
       "noRepo": "No README available (no repo URL).",
       "notFound": "Could not locate README.md in the repo."
-    }
+    },
+    "showReserved": "Show system plugins",
+    "hideReserved": "Hide system plugins",
+    "loadErrorTitle": "Plugin load error",
+    "loadErrorHint": "Check the console log for details."
   },
   "console": {
     "title": "Console",

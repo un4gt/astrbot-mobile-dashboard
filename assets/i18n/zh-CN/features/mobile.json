@@ -177,7 +177,11 @@
       "noReadme": "该插件没有 README。",
       "noRepo": "无 README 可读(没有仓库 URL)。",
       "notFound": "在仓库中找不到 README.md。"
-    }
+    },
+    "showReserved": "显示系统插件",
+    "hideReserved": "隐藏系统插件",
+    "loadErrorTitle": "插件加载出错",
+    "loadErrorHint": "详情请查看控制台日志。"
   },
   "console": {
     "title": "控制台",
